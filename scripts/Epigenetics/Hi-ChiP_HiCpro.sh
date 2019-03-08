@@ -32,3 +32,9 @@ python /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/script
 
 ###Then run
 singularity exec /project/apps/singularity-images/hicpro/hicpro-2.11.1.simg HiC-Pro -i /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/data/ -o /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/output -c /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/Epigenetics/config-hicpro.txt
+
+
+### Rerun through web viz
+module load singularity
+singularity exec --contain --cleanenv -B /project /project/apps/singularity-images/hicpro/hicpro-2.11.1.simg HiC-Pro -i /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/data/ -o /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/output_030719 -c /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/config-hicpro.txt
+

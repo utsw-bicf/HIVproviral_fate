@@ -41,7 +41,7 @@ BOWTIE2_LOCAL_OPTIONS =  --very-sensitive -L 20 --score-min L,-0.6,-0.2 --end-to
 #######################################################################
 
 REFERENCE_GENOME = GRCh38
-GENOME_SIZE = chrom.sizes
+GENOME_SIZE = /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/chrom.sizes
 
 #######################################################################
 ## Digestion Hi-C
