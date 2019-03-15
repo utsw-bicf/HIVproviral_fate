@@ -16,3 +16,11 @@ ddsFullCountTable <- DESeqDataSetFromMatrix(
   countData = ct,
   colData = DamID_design,
   design = ~ condition)
+
+ddsFullCountTable$condition <- relevel(ddsFullCountTable$condition, "damctl")
+dds <- DESeq(ddsFullCountTable)
+res <- results(dds)
+resSig <- res[which(res$padj < 0.05),]
+
+write.table(res, "damIDseq.txt")
+write.table(resSig, "damIDseq_sig0.05.txt")

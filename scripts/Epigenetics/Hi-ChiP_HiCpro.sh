@@ -30,11 +30,15 @@ python /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/script
 
 ### Prep config-hicpro.txt file in local folder
 
-###Then run
-singularity exec /project/apps/singularity-images/hicpro/hicpro-2.11.1.simg HiC-Pro -i /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/data/ -o /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/output -c /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/Epigenetics/config-hicpro.txt
+###Then run; this doesn't work because it looks outside the container for R
+#singularity exec /project/apps/singularity-images/hicpro/hicpro-2.11.1.simg HiC-Pro -i /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/data/ -o /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/output -c /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/Epigenetics/config-hicpro.txt
 
 
 ### Rerun through web viz
+### run, isolating the container but binding /project folder; this doesn't work because python can't find the iced module
 module load singularity
-singularity exec --contain --cleanenv -B /project /project/apps/singularity-images/hicpro/hicpro-2.11.1.simg HiC-Pro -i /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/data/ -o /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/output_030719 -c /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/config-hicpro.txt
+#singularity exec --contain --cleanenv -B /project /project/apps/singularity-images/hicpro/hicpro-2.11.1.simg HiC-Pro -i /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/data/ -o /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/output_030719 -c /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/config-hicpro.txt
 
+### A new container was made, run it through the web viz
+module load singularity
+singularity exec --contain --cleanenv -B /project /project/apps/singularity-images/hicpro/hicpro-2.11.3.simg HiC-Pro -i /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/data/ -o /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/output_031419 -c /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/config-hicpro.txt

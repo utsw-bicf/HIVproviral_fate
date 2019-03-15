@@ -12,8 +12,10 @@
 module load sra_toolkit/2.8.2-1
 
 #SRAs=`ls *.sra`
-SRAs="SRR3722566"
+#SRAs="SRR3722566"
+SRAs="SRR1791460 SRR1791461 SRR1791462 SRR1791463 SRR1791464 SRR1791465"
 
 for sra in $SRAs; do
 fastq-dump --gzip --dumpbase --origfmt ${sra}
+rm /home2/s185797/ncbi/public/sra/${sra}.sra
 done
