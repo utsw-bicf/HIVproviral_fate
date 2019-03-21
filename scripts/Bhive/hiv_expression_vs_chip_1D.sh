@@ -48,8 +48,8 @@ rm /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_f
 H3K4me3='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/callPeaksMACS/H3K4me3_pooled.fc_signal.bw'
 H3K27ac='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/callPeaksMACS/H3K27ac_pooled.fc_signal.bw'
 PolII='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus_PolII/callPeaksMACS/PolII_pooled.fc_signal.bw'
-DNAse='/project/BICF/BICF_Core/s185797/testing_ATACseq4DNAseseq/atacseq_analysis/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
-
+#DNAse='/project/BICF/BICF_Core/s185797/testing_ATACseq4DNAseseq/atacseq_analysis/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
+DNAse='/project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
 
 ########## Heatmaps
 module load deeptools/2.5.0.1
@@ -108,8 +108,8 @@ rm /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_f
 H3K4me3='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/callPeaksMACS/H3K4me3_pooled.fc_signal.bw'
 H3K27ac='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/callPeaksMACS/H3K27ac_pooled.fc_signal.bw'
 PolII='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus_PolII/callPeaksMACS/PolII_pooled.fc_signal.bw'
-DNAse='/project/BICF/BICF_Core/s185797/testing_ATACseq4DNAseseq/atacseq_analysis/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
-
+#DNAse='/project/BICF/BICF_Core/s185797/testing_ATACseq4DNAseseq/atacseq_analysis/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
+DNAse='/project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
 
 ########## Heatmaps
 module load deeptools/2.5.0.1
@@ -139,7 +139,8 @@ bamCoverage -p max/2 -b /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhiv
 H3K4me3='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/callPeaksMACS/H3K4me3_pooled.fc_signal.bw'
 H3K27ac='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/callPeaksMACS/H3K27ac_pooled.fc_signal.bw'
 PolII='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus_PolII/callPeaksMACS/PolII_pooled.fc_signal.bw'
-DNAse='/project/BICF/BICF_Core/s185797/testing_ATACseq4DNAseseq/atacseq_analysis/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
+#DNAse='/project/BICF/BICF_Core/s185797/testing_ATACseq4DNAseseq/atacseq_analysis/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
+DNAse='/project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
 RNAseq='/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/1D_expression_vs_chip/RNAseq.bw'
 
 ########## Heatmaps
@@ -196,8 +197,9 @@ plotHeatmap -m 1D_RNA_genes.mat.gz --sortRegions no --samplesLabel RNA --regions
 H3K4me3='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/callPeaksMACS/H3K4me3_pooled.fc_signal.bw'
 H3K27ac='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/callPeaksMACS/H3K27ac_pooled.fc_signal.bw'
 PolII='/project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus_PolII/callPeaksMACS/PolII_pooled.fc_signal.bw'
-DNAse='/project/BICF/BICF_Core/s185797/testing_ATACseq4DNAseseq/atacseq_analysis/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
-MNAseq='/project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis/workflow/output_MNase/callPeaksMACS/MNase-seq_DORSO_Not-deposited_pooled.pvalue_signal.bw'
+#DNAse='/project/BICF/BICF_Core/s185797/testing_ATACseq4DNAseseq/atacseq_analysis/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
+DNAse='/project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw'
+MNAseq='/project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_MNase/workflow/output_MNase/callPeaksMACS/MNase-seq_DORSO_Not-deposited_pooled.pvalue_signal.bw'
 
 ########## Heatmaps
 computeMatrix reference-point -S ${H3K4me3} ${H3K27ac} ${PolII} ${DNAse} ${MNAseq} \
@@ -223,9 +225,4 @@ computeMatrix scale-regions -S ${H3K4me3} ${H3K27ac} ${PolII} ${DNAse} ${MNAseq}
   -o 1D_Chip5_genes.mat.gz
 
 plotHeatmap -m 1D_Chip5_genes.mat.gz --sortRegions no --samplesLabel H3K4me3 H3K27ac PolII DNase MNase --regionsLabel Same Opposite Same C D --colorList 'white,black' 'white,purple' 'white,green' 'white,blue' 'white,red' -out 1D_Chip5_genes.pdf
-
-
-
-
-plotHeatmap -m test.mat.gz --sortRegions no --refPointLabel "HIV IS" --samplesLabel H3K4me3 H3K27ac PolII DNase MNase --regionsLabel Same Opposite Same C D --colorList 'white,black' 'white,purple' 'white,green' 'white,blue' 'white,red' -out test_IS.pdf
 

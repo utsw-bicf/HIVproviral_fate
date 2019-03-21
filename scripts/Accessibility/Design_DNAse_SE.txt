@@ -1,0 +1,3 @@
+sample_id	experiment_id	biosample	factor	treatment	replicate	fastq_read1
+ENCLB537ZZZ	DNAse-seq_ENCODE_GSM736501	E61	None	DNAse	1	ENCFF001DPF.fastq.gz
+ENCLB538ZZZ	DNAse-seq_ENCODE_GSM736501	E61	None	DNAse	2	ENCFF001DPG.fastq.gz
