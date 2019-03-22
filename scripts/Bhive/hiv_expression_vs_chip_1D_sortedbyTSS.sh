@@ -35,9 +35,9 @@ computeMatrix reference-point -S ${H3K4me3} ${H3K27ac} ${PolII} ${DNAse} ${MNAse
   -a 5000 \
   -b 5000 \
   --referencePoint center \
-  --sortRegions no \
-  --skipZeros \
+  --sortRegions keep \
   -p max/2 \
+  --outFileSortedRegions 1D_Chip5_sortbydisTSS.bed \
   -o 1D_Chip5_sortbydisTSS.mat.gz
 
 plotHeatmap -m 1D_Chip5_sortbydisTSS.mat.gz --sortRegions no --refPointLabel "HIV IS" --samplesLabel H3K4me3 H3K27ac PolII DNase MNase --regionsLabel Same Opposite Same C D --colorList 'white,black' 'white,purple' 'white,green' 'white,blue' 'white,red' -out 1D_Chip5_IS_sortbydisTSS.pdf
@@ -65,9 +65,9 @@ computeMatrix scale-regions -S ${H3K4me3} ${H3K27ac} ${PolII} ${DNAse} ${MNAseq}
   -a 5000 \
   -b 5000 \
   -m 5000 \
-  --sortRegions no \
-  --skipZeros \
+  --sortRegions keep \
   -p max/2 \
+  --outFileSortedRegions 1D_Chip5_genes_sortbydisTSS.bed \
   -o 1D_Chip5_genes_sortbydisTSS.mat.gz
 
 plotHeatmap -m 1D_Chip5_genes_sortbydisTSS.mat.gz --sortRegions no --samplesLabel H3K4me3 H3K27ac PolII DNase MNase --regionsLabel Same Opposite Same C D --colorList 'white,black' 'white,purple' 'white,green' 'white,blue' 'white,red' -out 1D_Chip5_genes_sortbydisTSS.pdf
@@ -80,9 +80,9 @@ computeMatrix reference-point -S ${RNAseq} \
   -a 5000 \
   -b 5000 \
   --referencePoint center \
-  --sortRegions no \
-  --skipZeros \
+  --sortRegions keep \
   -p max/2 \
+  --outFileSortedRegions 1D_RNA_sortbydisTSS.bed \
   -o 1D_RNA_sortbydisTSS.mat.gz
 
 plotHeatmap -m 1D_RNA_sortbydisTSS.mat.gz --sortRegions no --refPointLabel "HIV IS" --samplesLabel RNA --regionsLabel Same Opposite Same C D --colorList 'white,red' -out 1D_RNA_IS_sortbydisTSS.pdf
@@ -92,9 +92,9 @@ computeMatrix scale-regions -S ${RNAseq} \
   -a 5000 \
   -b 5000 \
   -m 5000 \
-  --sortRegions no \
-  --skipZeros \
+  --sortRegions keep \
   -p max/2 \
+  --outFileSortedRegions 1D_RNA_genes_sortbydisTSS.bed \
   -o 1D_RNA_genes_sortbydisTSS.mat.gz
 
 plotHeatmap -m 1D_RNA_genes_sortbydisTSS.mat.gz --sortRegions no --samplesLabel RNA --regionsLabel Same Opposite Same C D --colorList 'white,red' -out 1D_RNA_genes_sortbydisTSS.pdf

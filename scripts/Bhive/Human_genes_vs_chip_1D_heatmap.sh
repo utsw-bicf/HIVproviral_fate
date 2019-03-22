@@ -42,4 +42,4 @@ computeMatrix reference-point -S ${RNAseq} \
   -p max/2 \
   -o humangenes_rnaseq_chipsort.mat.gz
 
-plotHeatmap -m humangenes_rnaseq_chipsort.mat.gz --refPointLabel "TSS" --samplesLabel RNA --colorList 'white,red' --sortRegions keep -out humangenes_rnaseq_chipsort.pdf
+plotHeatmap -m humangenes_rnaseq_chipsort.mat.gz --refPointLabel "TSS" --samplesLabel RNA --colorList 'white,red' --sortRegions no -out humangenes_rnaseq_chipsort.pdf
