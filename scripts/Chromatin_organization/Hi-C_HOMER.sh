@@ -9,7 +9,7 @@
 #SBATCH --mail-type=END
 
 ### Follow: http://homer.ucsd.edu/homer/interactions2/quickndirty.html
-module load homer/4.9
+module load homer/4.10.4
 
 ### Concatenate fastqs by library
 #echo "Start concatenating libraries"
@@ -79,13 +79,37 @@ module load homer/4.9
 #echo "End alignment"
 
 ### HI-C tag directory
-echo "Start Hi-C tagging"
+#echo "Start Hi-C tagging"
 #mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/
-mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1
-mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2
-makeTagDirectory HicHomerTagDir/lib1/ alignments/GSM3489136_1.sam,alignments/GSM3489136_2.sam -tbp 1 -genome hg38 -checkGC -restrictionSite GATC -removePEbg -removeSpikes 10000 5
-makeTagDirectory HicHomerTagDir/lib2 alignments/GSM3489137_1.sam,alignments/GSM3489137_2.sam -tbp 1 -genome hg38 -checkGC -restrictionSite GATC -removePEbg -removeSpikes 10000 5
-echo "End Hi-C tagging"
+#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1
+#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2
+#makeTagDirectory HicHomerTagDir/lib1/ alignments/GSM3489136_1.sam,alignments/GSM3489136_2.sam -tbp 1 -genome hg38 -checkGC -restrictionSite GATC -removePEbg -removeSpikes 10000 5
+#makeTagDirectory HicHomerTagDir/lib2 alignments/GSM3489137_1.sam,alignments/GSM3489137_2.sam -tbp 1 -genome hg38 -checkGC -restrictionSite GATC -removePEbg -removeSpikes 10000 5
+#echo "End Hi-C tagging"
 
+### Compartment analysis
+### May need to do this again after runnning chromHMM to find open and closed regions
+echo "Compartment analsysis"
+runHiCpca.pl auto \
+  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
+  -res 25000 \
+  -window 50000 \
+  -genome hg38 \
+  -cpu 10
+runHiCpca.pl auto \
+  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
+  -res 25000 \
+  -window 50000 \
+  -genome hg38 \
+  -cpu 10
+echo "End Hi-C tagging"
+#combine outputs
+#annotatePeaks.pl HiCExp1TagDir/HiCExp1TagDir.PC1.txt \
+#  hg38 \
+#  -noblanks \
+#  -bedGraph HiCExp1TagDir/HiCExp1TagDir.PC1.bedGraph HiCExp2TagDir/HiCExp2TagDir.PC1.bedGraph HiCExp3TagDir/HiCExp3TagDir.PC1.bedGraph \
+#  > output.txt
+
+### Make files viewable for juicebox
 
 

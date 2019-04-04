@@ -26,24 +26,26 @@
 #  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/chipseq_input.txt \
 #  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output
 
+#unset DISPLAY
 #for i in $(seq 5 20); do
-#java -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar LearnModel \
+#java -Djava.awt.headless=true -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar LearnModel \
 #  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output \
 #  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_learn${i} \
 #  ${i} \
 #  hg38 
 #done
 
+### Compare models
+## softlink all but emissions_20 to a single folder
+#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/emissions
+#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_learn*/emissions_*.txt /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/emissions
+#rm /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/emissions/emissions_20.txt
+java -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar CompareModels \
+  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_learn20/emissions_20.txt \
+  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/emissions \
+  states
 
-unset DISPLAY
-for i in $(seq 5 20); do
-java -Djava.awt.headless=true -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar LearnModel \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_learn${i} \
-  ${i} \
-  hg38 
-done
-
-### The above didn't seem to work correctly. Try with just the histone
+### Need to find the correct states but the markers used were not that different from one another.
+### Use all markers availabl 
 ###########################################################################################################################
 
