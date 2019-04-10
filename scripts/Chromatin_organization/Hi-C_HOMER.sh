@@ -87,22 +87,44 @@ module load homer/4.10.4
 #makeTagDirectory HicHomerTagDir/lib2 alignments/GSM3489137_1.sam,alignments/GSM3489137_2.sam -tbp 1 -genome hg38 -checkGC -restrictionSite GATC -removePEbg -removeSpikes 10000 5
 #echo "End Hi-C tagging"
 
+### Create JuiceBox *.hic
+echo "Create JuiceBox file"
+tagDir2hicFile.pl HicHomerTagDir/lib1/ -juicer auto -genome hg38 -p 20
+tagDir2hicFile.pl HicHomerTagDir/lib2/ -juicer auto -genome hg38 -p 20
+echo "End create JuiceBox file"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################################################################################################
 ### Compartment analysis
 ### May need to do this again after runnning chromHMM to find open and closed regions
-echo "Compartment analsysis"
-runHiCpca.pl auto \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
-  -res 25000 \
-  -window 50000 \
-  -genome hg38 \
-  -cpu 10
-runHiCpca.pl auto \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
-  -res 25000 \
-  -window 50000 \
-  -genome hg38 \
-  -cpu 10
-echo "End Hi-C tagging"
+#echo "Compartment analsysis"
+#runHiCpca.pl auto \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
+#  -res 25000 \
+#  -window 50000 \
+#  -genome hg38 \
+#  -cpu 10
+#runHiCpca.pl auto \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
+#  -res 25000 \
+#  -window 50000 \
+#  -genome hg38 \
+#  -cpu 10
+#echo "Compartment analsysis"
 #combine outputs
 #annotatePeaks.pl HiCExp1TagDir/HiCExp1TagDir.PC1.txt \
 #  hg38 \

@@ -4,24 +4,22 @@
 ### Should find where the states level off
 ### From paper "Systematic mapping of chromatin state landscapes during mouse development"
 
-setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/')
+setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/states_all_data/')
 
-df <- read.table("states.txt", header=T, sep="\t")
+df <- read.table("allbam_states.txt", header=T, sep="\t")
 rownames(df) <- df[,1]
 df <- df[,2:(NCOL(df))]
 
-
-### Calculate the mean
-df$mean <- rowMeans(df)
-test <- as.data.frame(colMeans(df))
-test$state <- c(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
-plot(test$state,test$`colMeans(df)`)
-
-### Calculate the median
+### Calculate the median correlation
 test2 <- as.data.frame(apply(df, 2, FUN = median))
 test2$state <- c(5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
 plot(test2$state,test2$`apply(df, 2, FUN = median)`)
 
-test13 <- kmeans(df,13,iter.max=100)
-test9 <- kmeans(df,9,iter.max=100)
-test10 <- kmeans(df,10,iter.max=100)
+#### Use kmeans
+df2 <- data.frame()
+for (i in 5:19) {
+  du <- kmeans(df,i,iter.max=100)
+  ratio <- du$betweenss/du$totss
+  list <- as.data.frame(matrix(c(i,ratio), ncol = 2))
+  df2 <- rbind(df2, list)
+}
