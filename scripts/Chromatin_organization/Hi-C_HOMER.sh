@@ -10,6 +10,7 @@
 
 ### Follow: http://homer.ucsd.edu/homer/interactions2/quickndirty.html
 module load homer/4.10.4
+module load juicebox/1.5.6
 
 ### Concatenate fastqs by library
 #echo "Start concatenating libraries"
@@ -88,9 +89,11 @@ module load homer/4.10.4
 #echo "End Hi-C tagging"
 
 ### Create JuiceBox *.hic
+### Uses JuiceBox
 echo "Create JuiceBox file"
-tagDir2hicFile.pl HicHomerTagDir/lib1/ -juicer auto -genome hg38 -p 20
-tagDir2hicFile.pl HicHomerTagDir/lib2/ -juicer auto -genome hg38 -p 20
+#tagDir2hicFile.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 -juicer auto -genome hg38 -p 20 -juicerExe "java -jar /cm/shared/apps/juicebox/1.5.6/juicer_tools_linux_0.8.jar" 
+export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
+tagDir2hicFile.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 -juicer auto -genome hg38 -p 20 -juicerExe "java -jar /cm/shared/apps/juicebox/1.5.6/juicer_tools_linux_0.8.jar"
 echo "End create JuiceBox file"
 
 
