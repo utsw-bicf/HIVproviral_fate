@@ -2,7 +2,8 @@
 ### Run Hi-C data through HOMER
 
 #SBATCH --job-name=HOMER
-#SBATCH --mem 126976
+#SBATCH -p 256GB 
+#SBATCH --mem 253952
 #SBATCH --output=HOMER.%j.out
 #SBATCH --error=HOMER.%j.err
 #SBATCH --mail-user=holly.ruess@utsouthwestern.edu
@@ -90,51 +91,88 @@ module load juicebox/1.5.6
 
 ### Create JuiceBox *.hic
 ### Uses JuiceBox
-echo "Create JuiceBox file"
+### If the file is big use the export function for perl
+#echo "Create JuiceBox file"
 #tagDir2hicFile.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 -juicer auto -genome hg38 -p 20 -juicerExe "java -jar /cm/shared/apps/juicebox/1.5.6/juicer_tools_linux_0.8.jar" 
-export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
-tagDir2hicFile.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 -juicer auto -genome hg38 -p 20 -juicerExe "java -jar /cm/shared/apps/juicebox/1.5.6/juicer_tools_linux_0.8.jar"
-echo "End create JuiceBox file"
+#export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
+#tagDir2hicFile.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 -juicer auto -genome hg38 -p 20 -juicerExe "java -jar /cm/shared/apps/juicebox/1.5.6/juicer_tools_linux_0.8.jar"
+#echo "End create JuiceBox file"
+
+##### Visualize a Hi-C contact map
+#echo "Create Background Models"
+#analyzeHiC \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
+#  -res 100000 \
+#  -bgonly \
+#  -cpu 8
+#analyzeHiC \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
+#  -res 100000 \
+#  -bgonly \
+#  -cpu 8
+#echo "End Create Background Models"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-####################################################################################################
 ### Compartment analysis
 ### May need to do this again after runnning chromHMM to find open and closed regions
 #echo "Compartment analsysis"
+#export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
 #runHiCpca.pl auto \
 #  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
-#  -res 25000 \
-#  -window 50000 \
-#  -genome hg38 \
-#  -cpu 10
+ # -cpu 10
+#export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
 #runHiCpca.pl auto \
 #  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
-#  -res 25000 \
-#  -window 50000 \
-#  -genome hg38 \
 #  -cpu 10
 #echo "Compartment analsysis"
-#combine outputs
-#annotatePeaks.pl HiCExp1TagDir/HiCExp1TagDir.PC1.txt \
-#  hg38 \
-#  -noblanks \
-#  -bedGraph HiCExp1TagDir/HiCExp1TagDir.PC1.bedGraph HiCExp2TagDir/HiCExp2TagDir.PC1.bedGraph HiCExp3TagDir/HiCExp3TagDir.PC1.bedGraph \
-#  > output.txt
 
+###combine outputs
+#annotatePeaks.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2/lib2.25x50kb.PC1.txt \
+#  /project/shared/bicf_workflow_ref/human/GRCh38/genome.fa \
+#  -organism GRCh38 \
+#  -gtf /project/shared/bicf_workflow_ref/human/GRCh38/gencode.gtf \
+#  -noblanks \
+#  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2/lib2.25x50kb.PC1.bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1/lib1.25x50kb.PC1.bedGraph \
+#  > combine_output.txt
+
+### Chromatin Compaction
+#echo "Chromatin Compaction"
+#analyzeHiC \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
+#  -res 5000 \
+#  -window 15000 \
+#  -nomatrix \
+#  -compactionStats auto \
+#  -cpu 10
+#analyzeHiC \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
+#  -res 5000 \
+#  -window 15000 \
+#  -nomatrix \
+#  -compactionStats auto \
+#  -cpu 10
+#echo "End Chromatin Compaction"
+
+### Finding TADs and Loops
+echo "Start finding TADs and Loops"
+export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
+findTADsAndLoops.pl \
+  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
+   -cpu 10 \
+  -res 3000 \
+  -window 15000 \
+  -genome hg38 
+
+export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
+findTADsAndLoops.pl \
+  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
+   -cpu 10 \
+  -res 3000 \
+  -window 15000 \
+  -genome hg38
+echo "End finding TADs and Loops"
+
+####################################################################################################
 ### Make files viewable for juicebox
 
 
