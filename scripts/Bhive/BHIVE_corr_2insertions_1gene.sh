@@ -1,5 +1,5 @@
 #! /bin/bash
-This script makes the scatterplots for 2 HIV insertions into 1 gene, comparing expression of insertions
+###This script makes the scatterplots for 2 HIV insertions into 1 gene, comparing expression of insertions
 
 ### Get a list of just 2 insertions into 1 gene
 Rscript /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/Bhive/BHIVE_corr_2insertions_1gene_makelist.R

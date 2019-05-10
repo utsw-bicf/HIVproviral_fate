@@ -65,13 +65,13 @@ ggplot(dffpkm, aes(x=V11, y=log10fpkm, size=V8, color=group)) +
   ggtitle("HIV Expression to Host Gene Expression") + 
   xlab("Log10 HIV Expression") + 
   ylab("Host Gene Expression (Log10(fpkm))") + 
-  scale_x_continuous(limits=c(-1.5, 1.5)) +
+  scale_x_continuous(limits=c(-3.5, 3)) +
   scale_y_continuous(limits=c(0, 6.5)) +
-  annotate("text", x = -1.5, y = 6.40, label = "Intergenic Same r = 0.18 (p-value = 0.048)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = -1.5, y = 6.25, label = "Intergenic Convergent r = 0.12 (p-value = 0.318)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = -1.5, y = 6.10, label = "Intergenic Divergent r = 0.11 (p-value = 0.326)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = -1.5, y = 5.95, label = "Intragenic Same r = 0.02 (p-value = 0.601)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = -1.5, y = 5.8, label = "Intragenic Convergent r = 0.04 (p-value = 0.113)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 6.40, label = "Intergenic Same r = 0.09 (p-value = 0.29)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 6.25, label = "Intergenic Convergent r = 0.26 (p-value = 0.03)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 6.10, label = "Intergenic Divergent r = 0.11 (p-value = 0.32)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 5.95, label = "Intragenic Same r = -0.002 (p-value = 0.94)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 5.8, label = "Intragenic Convergent r = 0.07 (p-value = 0.06)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -90,9 +90,9 @@ ggplot(g1fpkm, aes(x=V11, y=log10fpkm, size=V8, color=group)) +
   ggtitle("HIV Expression to Host Gene Expression") + 
   xlab("Log10 HIV Expression") + 
   ylab("Host Gene Expression (Log10(fpkm))") + 
-  scale_x_continuous(limits=c(-1.5, 1.5)) +
+  scale_x_continuous(limits=c(-3.5, 3)) +
   scale_y_continuous(limits=c(0, 6.5)) +
-  annotate("text", x = -1.5, y = 6.40, label = "Intergenic Same r = 0.18 (p-value = 0.048)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 6.40, label = "Intergenic Same r = 0.09 (p-value = 0.29)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -109,9 +109,9 @@ ggplot(g2fpkm, aes(x=V11, y=log10fpkm, size=V8, color=group)) +
   ggtitle("HIV Expression to Host Gene Expression") + 
   xlab("Log10 HIV Expression") + 
   ylab("Host Gene Expression (Log10(fpkm))") + 
-  scale_x_continuous(limits=c(-1.5, 1.5)) +
+  scale_x_continuous(limits=c(-3.5, 3)) +
   scale_y_continuous(limits=c(0, 6.5)) +
-  annotate("text", x = -1.5, y = 6.40, label = "Intergenic Convergent r = 0.12 (p-value = 0.318)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 6.40, label = "Intergenic Convergent r = 0.26 (p-value = 0.03)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -128,9 +128,9 @@ ggplot(g3fpkm, aes(x=V11, y=log10fpkm, size=V8, color=group)) +
   ggtitle("HIV Expression to Host Gene Expression") + 
   xlab("Log10 HIV Expression") + 
   ylab("Host Gene Expression (Log10(fpkm))") + 
-  scale_x_continuous(limits=c(-1.5, 1.5)) +
+  scale_x_continuous(limits=c(-3.5, 3)) +
   scale_y_continuous(limits=c(0, 6.5)) +
-  annotate("text", x = -1.5, y = 6.40, label = "Intergenic Divergent r = 0.11 (p-value = 0.326)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 6.40, label = "Intergenic Divergent r = 0.11 (p-value = 0.32)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -147,9 +147,9 @@ ggplot(g4fpkm, aes(x=V11, y=log10fpkm, size=V8, color=group)) +
   ggtitle("HIV Expression to Host Gene Expression") + 
   xlab("Log10 HIV Expression") + 
   ylab("Host Gene Expression (Log10(fpkm))") + 
-  scale_x_continuous(limits=c(-1.5, 1.5)) +
+  scale_x_continuous(limits=c(-3.5, 3)) +
   scale_y_continuous(limits=c(0, 6.5)) +
-  annotate("text", x = -1.5, y = 6.40, label = "Intragenic Same r = 0.02 (p-value = 0.601)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 6.40, label = "Intragenic Same r = -0.002 (p-value = 0.94)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -166,9 +166,9 @@ ggplot(g5fpkm, aes(x=V11, y=log10fpkm, size=V8, color=group)) +
   ggtitle("HIV Expression to Host Gene Expression") + 
   xlab("Log10 HIV Expression") + 
   ylab("Host Gene Expression (Log10(fpkm))") + 
-  scale_x_continuous(limits=c(-1.5, 1.5)) +
+  scale_x_continuous(limits=c(-3.5, 3)) +
   scale_y_continuous(limits=c(0, 6.5)) +
-  annotate("text", x = -1.5, y = 6.40, label = "Intragenic Convergent r = 0.04 (p-value = 0.113)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -3.5, y = 6.40, label = "Intragenic Convergent r = 0.07 (p-value = 0.06)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),

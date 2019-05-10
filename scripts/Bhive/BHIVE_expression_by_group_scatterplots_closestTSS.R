@@ -49,12 +49,12 @@ ggplot(df, aes(x=logDis, y=V11, size=V8, color=group)) +
   xlab("Log10 Distance to TSS") + 
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(2, 6.5)) +
-  scale_y_continuous(limits=c(-1.5, 1.5)) +
-  annotate("text", x = 2.0, y = 1.50, label = "Intergenic Same r = -0.21 (p-value = 0.02)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.0, y = 1.42, label = "Intergenic Convergent r = -0.05 (p-value = 0.68)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.0, y = 1.35, label = "Intergenic Divergent r = -0.15 (p-value = 0.20)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.0, y = 1.28, label = "Intragenic Same r = -0.15 (p-value = 0.0003)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.0, y = 1.21, label = "Intragenic Convergent r = -0.17 (p-value = 0.00002)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  scale_y_continuous(limits=c(-3.5, 3)) +
+  annotate("text", x = 2.0, y = 3, label = "Intergenic Same r = -0.13 (p-value = 0.14)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 2.0, y = 2.85, label = "Intergenic Convergent r = -0.19 (p-value = 0.11)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 2.0, y = 2.70, label = "Intergenic Divergent r = -0.16 (p-value = 0.15)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 2.0, y = 2.55, label = "Intragenic Same r = -0.13 (p-value = 0.0012)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 2.0, y = 2.40, label = "Intragenic Convergent r = -0.23 (p-value = 0.0000000064)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -74,8 +74,8 @@ ggplot(g1, aes(x=logDis, y=V11, size=V8, color=group)) +
   xlab("Log10 Distance to TSS") + 
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(2, 6.5)) +
-  scale_y_continuous(limits=c(-1.5, 1.5)) +
-  annotate("text", x = 2.0, y = 1.50, label = "Intergenic Same r = -0.21 (p-value = 0.02)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
+  scale_y_continuous(limits=c(-3.5, 3)) +
+  annotate("text", x = 2.0, y = 3, label = "Intergenic Same r = -0.13 (p-value = 0.14)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
     theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -93,8 +93,8 @@ ggplot(g2, aes(x=logDis, y=V11, size=V8, color=group)) +
   xlab("Log10 Distance to TSS") + 
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(2, 6.5)) +
-  scale_y_continuous(limits=c(-1.5, 1.5)) +
-  annotate("text", x = 2.0, y = 1.50, label = "Intergenic Convergent r = -0.05 (p-value = 0.68)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  scale_y_continuous(limits=c(-3.5, 3)) +
+  annotate("text", x = 2.0, y = 3, label = "Intergenic Convergent r = -0.19 (p-value = 0.11)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -112,8 +112,8 @@ ggplot(g3, aes(x=logDis, y=V11, size=V8, color=group)) +
   xlab("Log10 Distance to TSS") + 
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(2, 6.5)) +
-  scale_y_continuous(limits=c(-1.5, 1.5)) +
-  annotate("text", x = 2.0, y = 1.50, label = "Intergenic Divergent r = -0.15 (p-value = 0.20)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
+  scale_y_continuous(limits=c(-3.5, 3)) +
+  annotate("text", x = 2.0, y = 3, label = "Intergenic Divergent r = -0.16 (p-value = 0.15)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -131,8 +131,8 @@ ggplot(g4, aes(x=logDis, y=V11, size=V8, color=group)) +
   xlab("Log10 Distance to TSS") + 
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(2, 6.5)) +
-  scale_y_continuous(limits=c(-1.5, 1.5)) +
-  annotate("text", x = 2.0, y = 1.50, label = "Intragenic Same r = -0.15 (p-value = 0.0003)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
+  scale_y_continuous(limits=c(-3.5, 3)) +
+  annotate("text", x = 2.0, y = 3, label = "Intragenic Same r = -0.13 (p-value = 0.0012)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -150,8 +150,8 @@ ggplot(g5, aes(x=logDis, y=V11, size=V8, color=group)) +
   xlab("Log10 Distance to TSS") + 
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(2, 6.5)) +
-  scale_y_continuous(limits=c(-1.5, 1.5)) +
-  annotate("text", x = 2.0, y = 1.50, label = "Intragenic Convergent r = -0.17 (p-value = 0.00002)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  scale_y_continuous(limits=c(-3.5, 3)) +
+  annotate("text", x = 2.0, y = 3, label = "Intragenic Convergent r = -0.23 (p-value = 0.0000000064)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),

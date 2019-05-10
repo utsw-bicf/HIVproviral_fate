@@ -1,11 +1,11 @@
 #! /bin/sh
 ### Run Hi-C data through HOMER
 
-#SBATCH --job-name=HOMER
+#SBATCH --job-name=stdHOMER
 #SBATCH -p 256GB 
 #SBATCH --mem 253952
-#SBATCH --output=HOMER.%j.out
-#SBATCH --error=HOMER.%j.err
+#SBATCH --output=stdHOMER.%j.out
+#SBATCH --error=stdHOMER.%j.err
 #SBATCH --mail-user=holly.ruess@utsouthwestern.edu
 #SBATCH --mail-type=END
 
@@ -83,11 +83,11 @@ module load R
 
 ### HI-C tag directory
 #echo "Start Hi-C tagging"
-#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/
-#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1
-#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2
-#makeTagDirectory HicHomerTagDir/lib1 alignments/GSM3489136_1.sam,alignments/GSM3489136_2.sam -tbp 1 -genome hg38 -checkGC -restrictionSite GATC -removePEbg
-#makeTagDirectory HicHomerTagDir/lib2 alignments/GSM3489137_1.sam,alignments/GSM3489137_2.sam -tbp 1 -genome hg38 -checkGC -restrictionSite GATC -removePEbg
+#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/
+#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1
+#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2
+#makeTagDirectory std_HicHomerTagDir/lib1 alignments/GSM3489136_1.sam,alignments/GSM3489136_2.sam -genome hg38 -checkGC -restrictionSite GATC 
+#makeTagDirectory std_HicHomerTagDir/lib2 alignments/GSM3489137_1.sam,alignments/GSM3489137_2.sam -genome hg38 -checkGC -restrictionSite GATC 
 #echo "End Hi-C tagging"
 
 ### Create JuiceBox *.hic
@@ -95,33 +95,27 @@ module load R
 ### If the file is big use the export function for perl
 #echo "Create JuiceBox file"
 #tagDir2hicFile.pl \
-#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
 #  -juicer auto \
 #  -genome hg38 \
 #  -p 20 \
 #  -juicerExe "java -jar /cm/shared/apps/juicebox/1.5.6/juicer_tools_linux_0.8.jar" 
 #export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
 #tagDir2hicFile.pl \
-#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
 #  -juicer auto \
 #  -genome hg38 \
 #  -p 20 \
 #  -juicerExe "java -jar /cm/shared/apps/juicebox/1.5.6/juicer_tools_linux_0.8.jar"
 #echo "End create JuiceBox file"
 
-##### Visualize a Hi-C contact map
+##### Visualize a Hi-C contact map;   -bgonly \
 #echo "Create Background Models"
 #analyzeHiC \
-#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
-#  -res 5000 \
-##  -window 10000 \
-#  -bgonly \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
 #  -cpu 8
 #analyzeHiC \
-#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
-#  -res 5000 \
-#  -window 10000 \
-#  -bgonly \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
 #  -cpu 8
 #echo "End Create Background Models"
 
@@ -131,38 +125,38 @@ module load R
 #echo "Compartment analsysis - PCA"
 #export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
 #runHiCpca.pl auto \
-#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
 #  -cpu 10
 #export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
 #runHiCpca.pl auto \
-#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
 #  -cpu 10
 ###combine outputs
-#echo "combine PCA outputs"
-#annotatePeaks.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2/lib2.25x50kb.PC1.txt \
-#  hg38 \
-#  -noblanks \
-#  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2/lib2.25x50kb.PC1.bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1/lib1.25x50kb.PC1.bedGraph \
- # > /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2/lib2.25x50kb.PC1.bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/combine_PC1_output.txt
-#echo "Compartment analsysis - PCA"
+echo "combine PCA outputs"
+annotatePeaks.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/lib2.50x100kb.PC1.txt \
+  hg38 \
+  -noblanks \
+  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/lib2.50x100kb.PC1.bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1/lib1.50x100kb.PC1.bedGraph \
+  > /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/combine_PC1_output.txt
+echo "Compartment analsysis - PCA"
 
 ### Chromatin Compaction
-#echo "Chromatin Compaction"
-#analyzeHiC \
-#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
-#  -res 5000 \
-#  -window 15000 \
-#  -nomatrix \
-#  -compactionStats auto \
-#  -cpu 10
-#analyzeHiC \
-#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
-#  -res 5000 \
-#  -window 15000 \
-#  -nomatrix \
-#  -compactionStats auto \
-#  -cpu 10
-#echo "End Chromatin Compaction"
+echo "Chromatin Compaction"
+analyzeHiC \
+  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
+  -res 5000 \
+  -window 15000 \
+  -nomatrix \
+  -compactionStats auto \
+  -cpu 10
+analyzeHiC \
+  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
+  -res 5000 \
+  -window 15000 \
+  -nomatrix \
+  -compactionStats auto \
+  -cpu 10
+echo "End Chromatin Compaction"
 
 
 ### Finding TADs and Loops
@@ -173,7 +167,7 @@ module load R
 echo "Start finding TADs and Loops"
 export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
 findTADsAndLoops.pl \
-  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib1 \
+  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
   -cpu 10 \
   -res 3000 \
   -window 15000 \
@@ -182,7 +176,7 @@ findTADsAndLoops.pl \
 
 export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
 findTADsAndLoops.pl \
-  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/HicHomerTagDir/lib2 \
+  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
   -cpu 10 \
   -res 3000 \
   -window 15000 \

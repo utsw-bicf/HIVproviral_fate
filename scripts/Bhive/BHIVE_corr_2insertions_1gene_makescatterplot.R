@@ -1,5 +1,6 @@
 ### This script makes the scatter plot
 ### Use in script BHIVE_corr_2insertions_1gene.sh
+library(ggplot2)
 
 setwd("/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_closestTSS_scatterplots")
 
@@ -27,7 +28,7 @@ ggplot(ex_val_gn, aes(x=V2, y=V3)) +
   ggtitle("HIV Expression of 2 Insertions into 1 Gene") + 
   xlab("Insertion 1 (closest to TSS) Expression") + 
   ylab("Insertion 2 (closest to TES) Expression") + 
-  annotate("text", x = -1.3, y = 1, label = "r = -0.13 (p-value = 0.1324)", size=3, hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -2.5, y = 1.1, label = "r = -0.04 (p-value = 0.67)", size=3, hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -77,11 +78,11 @@ ggplot(df, aes(x=V2, y=V3, color=group)) +
   ggtitle("HIV Expression of 2 Insertions into 1 Gene") + 
   xlab("Insertion 1 (closest to TSS) Expression") + 
   ylab("Insertion 2 (closest to TES) Expression") + 
-  scale_x_continuous(limits=c(-1.3, 1.3)) +
-  scale_y_continuous(limits=c(-1.3, 1.3)) +
-  annotate("text", x = -1.3, y = 1, label = "Same r = 0.48 (p-value = 0.0038)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = -1.3, y = 0.93, label = "Opposite r = -0.195 (p-value = 0.12)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = -1.3, y = 0.85, label = "Mixed r = -0.23 (p-value = 0.013)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  scale_x_continuous(limits=c(-2.5, 2.5)) +
+  scale_y_continuous(limits=c(-2.5, 2)) +
+  annotate("text", x = -2.5, y = 2, label = "Same r = -0.02 (p-value = 0.91)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -2.5, y = 1.9, label = "Opposite r = -0.03 (p-value = 0.87)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = -2.5, y = 1.8, label = "Mixed r = -0.03 (p-value = 0.78)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -100,9 +101,9 @@ ggplot(same_gn, aes(x=V2, y=V3, color=group)) +
   ggtitle("HIV Expression of 2 Insertions into 1 Gene") + 
   xlab("Insertion 1 (closest to TSS) Expression") + 
   ylab("Insertion 2 (closest to TES) Expression") + 
-  scale_x_continuous(limits=c(-1.3, 1.3)) +
-  scale_y_continuous(limits=c(-1.3, 1.3)) +
-  annotate("text", x = -1.3, y = 1, label = "Same r = 0.48 (p-value = 0.0038)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
+  scale_x_continuous(limits=c(-2.5, 2.5)) +
+  scale_y_continuous(limits=c(-2.5, 2)) +
+  annotate("text", x = -2.5, y = 2, label = "Same r = -0.02 (p-value = 0.91)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -121,9 +122,9 @@ ggplot(opp_gn, aes(x=V2, y=V3, color=group)) +
   ggtitle("HIV Expression of 2 Insertions into 1 Gene") + 
   xlab("Insertion 1 (closest to TSS) Expression") + 
   ylab("Insertion 2 (closest to TES) Expression") + 
-  scale_x_continuous(limits=c(-1.3, 1.3)) +
-  scale_y_continuous(limits=c(-1.3, 1.3)) +
-  annotate("text", x = -1.3, y = 1, label = "Opposite r = -0.195 (p-value = 0.12)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
+  scale_x_continuous(limits=c(-2.5, 2.5)) +
+  scale_y_continuous(limits=c(-2.5, 2)) +
+  annotate("text", x = -2.5, y = 2, label = "Opposite r = -0.03 (p-value = 0.87)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -142,9 +143,9 @@ ggplot(mix_gn, aes(x=V2, y=V3, color=group)) +
   ggtitle("HIV Expression of 2 Insertions into 1 Gene") + 
   xlab("Insertion 1 (closest to TSS) Expression") + 
   ylab("Insertion 2 (closest to TES) Expression") + 
-  scale_x_continuous(limits=c(-1.3, 1.3)) +
-  scale_y_continuous(limits=c(-1.3, 1.3)) +
-  annotate("text", x = -1.3, y = 1, label = "Mixed r = -0.23 (p-value = 0.013)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  scale_x_continuous(limits=c(-2.5, 2.5)) +
+  scale_y_continuous(limits=c(-2.5, 2)) +
+  annotate("text", x = -2.5, y = 2, label = "Mixed r = -0.03 (p-value = 0.78)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),

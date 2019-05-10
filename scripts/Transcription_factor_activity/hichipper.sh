@@ -16,10 +16,13 @@
 ###### Dependencies
 module load python/2.7.x-anaconda
 module load bedtools/2.26.0
+#module load bedtools/2.25.0
 module load samtools/gcc/1.8
 module load R/3.5.1-gccmkl
 source ~/.bash_profile 
 
+###### Make Mbol file; needs to only contain chr 1-22 XYM because lambdaProcess.R with throw an error
+# zcat /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/GRCh38_MbolI.bed.gz | awk '{if ($1 ~ /chr/ && $1 !~ /_/ && $1 !~ /EBV/) print $0}' | gzip  >/project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/GRCh38_chr_MbolI.bed.gz
 
 #################### Don't use below; YY1 chipseq file isn't informative (see chromhmm)
 ###### Make yaml file
@@ -38,15 +41,14 @@ echo "call denovo peaks: COMBINED,ALL"
 echo "peaks:
   - COMBINED,ALL
 resfrags:
-  - /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/GRCh38_MbolI.bed.gz
+  - /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/GRCh38_chr_MbolI.bed.gz
 hicpro_output:
   - /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/output_031419" >/project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/HiChipper/config_peaks_all.yaml
 
 hichipper \
   /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/HiChipper/config_peaks_all.yaml \
   --out YY1_peaks_all \
-  --keep-temp-files \
-  --keep-samples rep1
+  --keep-temp-files
 echo "End call denovo peaks: COMBINED,ALL"
 
 #echo "call denovo peaks: COMBINED,SELF"

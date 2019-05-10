@@ -1,6 +1,6 @@
 ### This script identifies insertions where the closest TSS is not the closest Gene
 
-setwd("/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated")
+setwd("/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles")
 
 ### Load the two files
 TSS <- read.table("hiv_expression_intergenic_closestTSS.bed", header=F, sep="\t")
