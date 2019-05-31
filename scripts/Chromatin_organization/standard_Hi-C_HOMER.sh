@@ -132,31 +132,31 @@ module load R
 #  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
 #  -cpu 10
 ###combine outputs
-echo "combine PCA outputs"
-annotatePeaks.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/lib2.50x100kb.PC1.txt \
-  hg38 \
-  -noblanks \
-  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/lib2.50x100kb.PC1.bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1/lib1.50x100kb.PC1.bedGraph \
-  > /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/combine_PC1_output.txt
-echo "Compartment analsysis - PCA"
+#echo "combine PCA outputs"
+#annotatePeaks.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/lib2.50x100kb.PC1.txt \
+#  hg38 \
+#  -noblanks \
+#  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/lib2.50x100kb.PC1.bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1/lib1.50x100kb.PC1.bedGraph \
+#  > /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/combine_PC1_output.txt
+#echo "Compartment analsysis - PCA"
 
 ### Chromatin Compaction
-echo "Chromatin Compaction"
-analyzeHiC \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
-  -res 5000 \
-  -window 15000 \
-  -nomatrix \
-  -compactionStats auto \
-  -cpu 10
-analyzeHiC \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
-  -res 5000 \
-  -window 15000 \
-  -nomatrix \
-  -compactionStats auto \
-  -cpu 10
-echo "End Chromatin Compaction"
+#echo "Chromatin Compaction"
+#analyzeHiC \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
+#  -res 5000 \
+#  -window 15000 \
+#  -nomatrix \
+#  -compactionStats auto \
+#  -cpu 10
+#analyzeHiC \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
+#  -res 5000 \
+#  -window 15000 \
+#  -nomatrix \
+ # -compactionStats auto \
+#  -cpu 10
+#echo "End Chromatin Compaction"
 
 
 ### Finding TADs and Loops
@@ -164,28 +164,51 @@ echo "End Chromatin Compaction"
 #wget -O gap.txt.gz http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/gap.txt.gz
 #wget -O dups.txt.gz http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/genomicSuperDups.txt.gz
 #zcat gap.txt.gz dups.txt.gz | cut -f2-4 > badRegions.bed
-echo "Start finding TADs and Loops"
-export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
-findTADsAndLoops.pl \
-  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
-  -cpu 10 \
-  -res 3000 \
-  -window 15000 \
-  -genome hg38 \
-  -p /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/badRegions.bed
+#echo "Start finding TADs and Loops"
+#export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
+#findTADsAndLoops.pl \
+#  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1 \
+#  -cpu 10 \
+#  -res 3000 \
+#  -window 15000 \
+#  -genome hg38 \
+#  -p /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/badRegions.bed
 
-export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
-findTADsAndLoops.pl \
-  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
-  -cpu 10 \
-  -res 3000 \
-  -window 15000 \
-  -genome hg38 \
-  -p /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/badRegions.bed
-echo "End finding TADs and Loops"
+#export TMPDIR=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/tmp
+#findTADsAndLoops.pl \
+#  find /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2 \
+ # -cpu 10 \
+#  -res 3000 \
+#  -window 15000 \
+#  -genome hg38 \
+#  -p /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/badRegions.bed
+#echo "End finding TADs and Loops"
 
 ####################################################################################################
-### ???merge2Dbed.pl
-### ???findTADsAndLoops.pl score 
 
+### Make interaction matrix
+# module load juicebox/1.5.6
+# java -jar /cm/shared/apps/juicebox/1.5.6/Juicebox.jar
+# load *.hic files
 
+### Merge tads and loops
+#merge2Dbed.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1/lib1.tad.2D.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/lib2.tad.2D.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/merge_lib/lib.tad.2D.bed
+
+#merge2Dbed.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1/lib1.loop.2D.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/lib2.loop.2D.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/merge_lib/lib.loop.2D.bed
+
+### Find Significant Interactions
+#analyzeHiC /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1/ -res 1000000 -interactions lib1_significantInteractions.txt -nomatrix -cpu 25
+#analyzeHiC /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/ -res 1000000 -interactions lib2_significantInteractions.txt -nomatrix -cpu 25
+
+### Find High resolution connections
+#findHiCInteractionsByChr.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib1/ -res 2000 -superRes 10000 -cpu 25 > lib1_chrInteractions.txt
+findHiCInteractionsByChr.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/lib2/ -res 2000 -superRes 10000 -cpu 25 > lib2_chrInteractions.txt
+
+### Annotate interactions
+annotateInteractions.pl lib1_chrInteractions.txt hg38 Annotated_interations_lib1/ -pvalue 0.05 
+#annotateInteractions.pl lib2_chrInteractions.txt hg38 Annotated_interations_lib2/ -pvalue 0.05 
+
+### Find interactions with peaks for cytoscape
+annotateInteractions.pl lib1_chrInteractions.txt hg38 lib1_annotated_w_peaks/ -p /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K4me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K27ac.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603225_GFP_H3K4me1.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603209_GFP_H3K36me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603215_GFP_H3K79me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603227_GFP_H3K9me3.replicated.narrowPeak
+
+annotateInteractions.pl lib2_chrInteractions.txt hg38 lib2_annotated_w_peaks/ -p /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K4me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K27ac.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603225_GFP_H3K4me1.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603209_GFP_H3K36me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603215_GFP_H3K79me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603227_GFP_H3K9me3.replicated.narrowPeak
