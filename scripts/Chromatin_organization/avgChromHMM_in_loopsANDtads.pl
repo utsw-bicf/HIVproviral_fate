@@ -4,8 +4,7 @@ use strict; use warnings;
 my ($chrom, $loop) = @ARGV;
 my (%column);
 my (@col, @col2);
-my ($score,$avgscore);
-my ($score2, $score3);
+my ($score,$score2, $score3, $score4, $avgscore);
 
 open IN, "<$chrom" or die $!;
 while (my $lines = <IN>) {
@@ -14,7 +13,7 @@ while (my $lines = <IN>) {
   push(@{$column{$col[0]}},[$col[1], $col[2], $col[3]]);
 }
 
-open OUT, ">testing_out.txt" or die $!;
+#open OUT, ">testing_out.txt" or die $!;
 open INF2, "<$loop" or die $!;
 while (my $lines2 = <INF2>) {
   chomp $lines2;
@@ -24,6 +23,7 @@ while (my $lines2 = <INF2>) {
   $score3=0;
   $score2=0;
   $score=0;
+  $score4=0;
     foreach my $item (@{$column{$col2[0]}}) {
       if (($item->[0] <= $col2[1]) and ($item->[1] >= $col2[1]) and ($item->[1] <= $col2[2])) {
         $score = $item->[2]*($item->[1] - $col2[1]);
@@ -34,8 +34,12 @@ while (my $lines2 = <INF2>) {
       elsif (($item->[0] <= $col2[2]) and ($item->[1] >= $col2[2]) and ($item->[0] >= $col2[1])) {
          $score3 += $item->[2]*($col2[2] - $item->[0]);
       }
-      $avgscore = sprintf("%.2f", ($score+$score2+$score3)/($col2[2]-$col2[1]));
+      elsif (($item->[0] <= $col2[1]) and ($item->[1] >= $col2[2])) {
+         $score4 = $item->[2]*($col2[2]-$col2[1])
+      }
+      $avgscore = sprintf("%.2f", ($score+$score2+$score3+$score4)/($col2[2]-$col2[1]));
     }
-print OUT "$lines2\t$avgscore\n";
+#print OUT "$lines2\t$avgscore\n";
+print "$lines2\t$avgscore\n";
   }
 }
