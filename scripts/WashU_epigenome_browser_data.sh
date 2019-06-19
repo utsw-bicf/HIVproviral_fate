@@ -132,6 +132,16 @@ awk 'FNR>1 {OFS="\t"; print $1, $2, $6}' /project/BICF/BICF_Core/shared/Projects
 bedToBigBed -type=bed3 delete.bed /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes test_loop.bigBed
 rm delete.bed
 
+
+
+### HIV Expression; bed to bedGraph
+awk 'FNR>1 {OFS="\t"; print $3, $4, $4+1, $10}' /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/hiv_expression.txt | sort -k 1,1 -k 2,2n | bgzip >HIV_expression.bedGraph.gz
+tabix -p bed HIV_expression.bedGraph.gz 
+
+
+
+
+
 ### Hi-ChiP Data; HiChipper
 awk '{OFS="\t"}; $8 < 0.05 && $1 == $4 {print $1, $2, $6, "hichipper_rep1", $7, $7, ".", 0, $1, $2, $3, ".", ".", $4, $5, $6, ".", "."}' /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/HiChipper/YY1_peaks_all/rep1.interactions.all.mango >rep1.bed
 
