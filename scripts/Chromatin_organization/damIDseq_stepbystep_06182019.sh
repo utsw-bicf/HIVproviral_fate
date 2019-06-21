@@ -68,24 +68,45 @@ fastqs="SRR5261759 SRR5261760 SRR5261761 SRR5261762"
 #rm /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/*.sam* /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/*_unsorted.bam* /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/*_sorted.bam*
 
 ### Convert to bed keeping, compare to GATC sites(perl script), reduce bam files
-echo "#################### bedtools ####################"
-module load bedtools/2.26.0
-module load picard/2.10.3
+#echo "#################### bedtools ####################"
+#module load bedtools/2.26.0
+#module load picard/2.10.3
+#module load samtools/intel/1.3
 
-mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts
+#mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts
 
-for fastq in ${fastqs}; do
+## Make GATC file to intersect for multimapped reads
+#awk '{OFS="\t"};{print $1,$2-2,$3+1,$4,$5,$6}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/GATC_sites.bed | awk '{OFS="\t"}; $2 >1 {print $0}' >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/GATC_intersect.bed
+
+#for fastq in ${fastqs}; do
   #bamToBed -i /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.bam | sort -k1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.bed
-  perl /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/Chromatin_organization/damIDseq_keepreads.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/GATC_sites.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.keeplist.txt
-  java -jar /cm/shared/apps/picard/2.10.3/picard.jar FilterSamReads \
-       I=i/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.bam \ 
-       O=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/${fastq}_filtered.bam \ 
-       READ_LIST_FILE=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.keeplist.txt \ 
-      FILTER=includeReadList
-done
+  #perl /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/Chromatin_organization/damIDseq_keepreads.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/GATC_sites.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.keeplist.txt
+#  java -jar /cm/shared/apps/picard/2.10.3/picard.jar FilterSamReads I=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.bam O=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}_delete.bam READ_LIST_FILE=/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}.keeplist.txt FILTER=includeReadList
+#  samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}_delete.bam
+#  bedtools intersect -a /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/${fastq}_delete.bam \
+#    -b /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/GATC_intersect.bed \
+#    -wa >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/${fastq}_filt.bam
+ # samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/${fastq}_filt.bam
+#done
 
+### call reads as peaks
+#echo "#################### START calling peaks ####################"
 
+#macs2 callpeak \
+#  -t /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261760_filt.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261762_filt.bam \
+#  -c /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261759_filt.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261761_filt.bam \
+#  -n damIDseq \
+#  -g hs \
+#  --keep-dup all \
+#  --bw 300 \
+#  --qvalue 0.05 \
+#  --mfold 5 50 \
+#  --broad \
+#  --broad-cutoff 0.1
 
+### Filter for significant
+awk '{OFS="\t"}; $9>1.3 && $7 > 2 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks.broadPeak >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks_sig.broadPeak
+#echo "#################### END calling peaks ####################"
 
 
 
