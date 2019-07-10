@@ -1,0 +1,7 @@
+experiment,file
+control_rep1,/project/BICF/BICF_Core/shared/Projects/Sachin/SuperEnhancer_Project/Venkat_Analysis/chipseq_analysis/workflow/output/filterReads/2377_2383_C_27AC_S2_R1_001.filt.nodup.bam
+control_rep2,/project/BICF/BICF_Core/shared/Projects/Sachin/SuperEnhancer_Project/Venkat_Analysis/chipseq_analysis/workflow/output/filterReads/X_2347_C_27AC_S4_R1_001.filt.nodup.bam
+control_rep3,/project/BICF/BICF_Core/shared/Projects/Sachin/SuperEnhancer_Project/Venkat_Analysis/chipseq_analysis/workflow/output/filterReads/X_2382_C_27AC_S2_R1_001.filt.nodup.bam
+mutant_rep1,/project/BICF/BICF_Core/shared/Projects/Sachin/SuperEnhancer_Project/Venkat_Analysis/chipseq_analysis/workflow/output/filterReads/2278_M_27AC_S4_R1_001.filt.nodup.bam
+mutant_rep2,/project/BICF/BICF_Core/shared/Projects/Sachin/SuperEnhancer_Project/Venkat_Analysis/chipseq_analysis/workflow/output/filterReads/X_2276_M_27AC_S6_R1_001.filt.nodup.bam
+mutant_rep3,/project/BICF/BICF_Core/shared/Projects/Sachin/SuperEnhancer_Project/Venkat_Analysis/chipseq_analysis/workflow/output/filterReads/2286_M_27AC_S6_R1_001.filt.nodup.bam

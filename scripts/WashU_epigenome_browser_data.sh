@@ -138,7 +138,10 @@ rm delete.bed
 awk 'FNR>1 {OFS="\t"; print $3, $4, $4+1, $10}' /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/hiv_expression.txt | sort -k 1,1 -k 2,2n | bgzip >HIV_expression.bedGraph.gz
 tabix -p bed HIV_expression.bedGraph.gz 
 
-
+### DamIDseq; replicated broadPeak from consensus peaks all experiments
+awk '{OFS="\t"}; $1 !~ /_/ {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K27ac.replicated.narrowPeak | sort -k 1,1 -k 2,2n >delete.narrowPeak
+bedToBigBed -type=bed6+4 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes DamID_peaks.bigBed
+rm delete.narrowPeak
 
 
 

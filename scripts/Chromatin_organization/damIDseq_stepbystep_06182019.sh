@@ -90,6 +90,7 @@ fastqs="SRR5261759 SRR5261760 SRR5261761 SRR5261762"
 #done
 
 ### call reads as peaks
+module load macs/2.1.0-20151222
 #echo "#################### START calling peaks ####################"
 
 #macs2 callpeak \
@@ -105,8 +106,25 @@ fastqs="SRR5261759 SRR5261760 SRR5261761 SRR5261762"
 #  --broad-cutoff 0.1
 
 ### Filter for significant
-awk '{OFS="\t"}; $9>1.3 && $7 > 2 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks.broadPeak >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks_sig.broadPeak
+#awk '{OFS="\t"}; $9>1.3 && $7 > 2 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks.broadPeak >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks_sig.broadPeak
 #echo "#################### END calling peaks ####################"
 
 
+### call peaks on unfiltered reads
+#echo "#################### START calling peaks ####################"
 
+macs2 callpeak \
+  -t /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261760.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261762.bam \
+  -c /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261759.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261761.bam \
+  -n damIDseq_unfilt \
+  -g hs \
+  --keep-dup all \
+  --bw 300 \
+  --qvalue 0.05 \
+  --mfold 5 50 \
+  --broad \
+  --broad-cutoff 0.1
+
+### Filter for significant
+awk '{OFS="\t"}; $9>1.3 && $7 > 2 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_unfilt_peaks.broadPeak >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_unfilt_peaks_sig.broadPeak
+#echo "#################### END calling peaks ####################"
