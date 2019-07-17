@@ -24,6 +24,9 @@ GSM3489136, GSM3489137
 Reads were pooled per library an ran through the standard Hi-C pipeline using homer version 4.10.4 (Heinz et al., 2010). Briefly, reads were trimmed with the command homerTools trim -3 GATC -mis 0 -matchStart 20 -min 20 and mapped to human reference genome (GRCh38, canonical) with bowtie2 version 2.2.8 (Langmead and Salzberg, 2012). 
 
 MakeTagDirectory
+analyzeHiC - background models
+runHiCpca.pl - compartment analysis
+
 
 6) DamID-seq
 
