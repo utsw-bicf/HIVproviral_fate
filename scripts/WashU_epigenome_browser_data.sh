@@ -9,7 +9,7 @@ module load juicebox/1.5.6
 cd /archive/shared/DOrso_BICF/WashU_browser_data
 
 ### DNAse-seq; replicated narrowPeak to bigBed
-awk '{OFS="\t"}; $1 !~ /_/ {print $0}' '/project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/consensusPeaks/DNAse-seq_ENCODE_GSM736501.replicated.narrowPeak' | sort -k 1,1 -k 2,2n >delete.narrowPeak
+grep -v "chrUn" '/project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/consensusPeaks/DNAse-seq_ENCODE_GSM736501.replicated.narrowPeak' | awk '{OFS="\t"}; {if ($5 > 1000) {print $1, $2, $3, $4, "1000", $6, $7, $8, $9} else {print $0}}' | sort -k 1,1 -k 2,2n >delete.narrowPeak
 bedToBigBed -type=bed6+4 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes DNase-seq_replicated_peaks.bigBed
 rm delete.narrowPeak
 
@@ -28,7 +28,7 @@ rm delete.narrowPeak
 
 ### ChiP-seq H3K4me3; replicated narrowPeak from consensus peaks all experiment
 awk '{OFS="\t"}; $1 !~ /_/ {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K4me3.replicated.narrowPeak | sort -k 1,1 -k 2,2n >delete.narrowPeak
-bedToBigBed -type=bed6+4 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes H3K4me3_replicated_peaks.bigBed
+bedToBigBed -type=bed6+3 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes H3K4me3_replicated_peaks.bigBed
 rm delete.narrowPeak
 
 
@@ -139,7 +139,7 @@ awk 'FNR>1 {OFS="\t"; print $3, $4, $4+1, $10}' /project/BICF/BICF_Core/shared/P
 tabix -p bed HIV_expression.bedGraph.gz 
 
 ### DamIDseq; replicated broadPeak from consensus peaks all experiments
-awk '{OFS="\t"}; $1 !~ /_/ {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K27ac.replicated.narrowPeak | sort -k 1,1 -k 2,2n >delete.narrowPeak
+awk '{OFS="\t"}; $1 !~ /_/ {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks_sig.broadPeak | sort -k 1,1 -k 2,2n >delete.narrowPeak
 bedToBigBed -type=bed6+4 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes DamID_peaks.bigBed
 rm delete.narrowPeak
 

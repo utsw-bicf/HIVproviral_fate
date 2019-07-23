@@ -49,7 +49,7 @@ def rpkm(peak_file,aln_file,exp_name,columns):
     ## RPKM  =   numReads / (geneLength/1000 * totalNumReads/1,000,000 )
     peak_counts = peak_file.multi_bam_coverage(bams=[aln_file])
     total_counts = reduce(lambda x, y: x + y, [ int(l.rstrip('\n').split('\t')[2]) for l in pysam.idxstats(aln_file).strip().split('\n')])
-    rpkm = peak_counts.each(normalized_to_length, 3, float(math.pow(10,9))/total_counts).saveas("test.bed")
+    rpkm = peak_counts.each(normalized_to_length, 4, float(math.pow(10,9))/total_counts).saveas("test.bed") ### Changed from 3 to 4
     rpkm_df = rpkm.to_dataframe()
     #os.remove('test.bed')
     rpkm_df.columns = columns
