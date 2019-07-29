@@ -1,4 +1,4 @@
-### This perl program finds the reads in DamIDseq that tough the edges of GATC sites
+### This perl program finds the reads in DamIDseq that touch the edges of GATC sites
 ### perl script
 use strict; use warnings;
 
