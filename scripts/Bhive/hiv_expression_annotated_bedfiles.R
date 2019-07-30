@@ -20,10 +20,14 @@ awk '$5!=$17 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhi
 
 ########## Group 6: Intragenic, both direction, 2 gene
 ### Note: this file contains 2 line/insert
+awk '{OFS="\t"} {print $1, $2, $3, $5, $17}' /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/hiv_expression_intragenic_2genes.bed | uniq -u | awk '{print $1, $2, $3, $4}' | sort | uniq >/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/group6_2gene_opposite_noexp.bed
+
 ########## Group 7: Intragenic, same direction, 2 gene
 ### Note: this file contains 2 line/insert
+comm -23 <(awk '{print $1, $2, $3, $5, $17}' /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/hiv_expression_intragenic_2genes.bed | sort) <(sort /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/delete.bed) | uniq | awk '{OFS="\t"} $4==$5 {print $1, $2, $3, $4}' | sort | uniq >/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/group7_2gene_same_noexp.bed
 ########## Group 8: Intragenic, opposite direction, 2 gene
 ### Note: this file contains 2 line/insert
+comm -23 <(awk '{print $1, $2, $3, $5, $17}' /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/hiv_expression_intragenic_2genes.bed | sort) <(sort /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/delete.bed) | uniq | awk '{OFS="\t"}$4!=$5 {print $1,$2,$3,$4}' | sort >/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/group8_2gene_opposite_noexp.bed
 
 ### Did not do group 6-8 by hand
 
