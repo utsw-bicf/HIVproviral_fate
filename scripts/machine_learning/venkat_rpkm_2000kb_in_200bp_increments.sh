@@ -59,8 +59,12 @@ done
 #samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/DNase_consensus.bam
 
 ### tt-Seq
-samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Expression/rnaseq/workflow/output_TT/Ttseq_CRAMER_GSM2260188.dedup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Expression/rnaseq/workflow/output_TT/Ttseq_CRAMER_GSM2260187.dedup.bam
-samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam
+#samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Expression/rnaseq/workflow/output_TT/Ttseq_CRAMER_GSM2260188.dedup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Expression/rnaseq/workflow/output_TT/Ttseq_CRAMER_GSM2260187.dedup.bam
+#samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam
+
+### H3K27me3
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/SRR647929.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/H3K27me3_single.bam
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/SRR647929.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/H3K27me3_single.bam.bai
 
 ######################################################################
 ######################################################################
@@ -77,22 +81,23 @@ H3K4me3,/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_fil
 RNAse,/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/RNAseq_consensus.bam
 MNase,/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/MNase_single.bam
 DNase,/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/DNase_consensus.bam
-TTseq,/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam" >/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/HIVexpression_HisPlus4.csv
+TTseq,/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam
+H3K27me3,/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/H3K27me3_single.bam" >/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/HIVexpression_His7Plus4.csv
 
 for file in $(ls /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/*0.bed); do
   name=$(basename -s .bed ${file})
-  python /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/machine_learning/venkat_rpkm.py --peaks ${file} --experiments /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/HIVexpression_HisPlus4.csv -f ${name}_HisPlus4 --minimum 0
+  python /home2/s185797/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/machine_learning/venkat_rpkm.py --peaks ${file} --experiments /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/HIVexpression_His7Plus4.csv -f ${name}_His7Plus4 --minimum 0
 done
 
 ######################################################################
 ######################################################################
 ######################################################################
 ### Get chromHMM
-grep -v "_" /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone/learn_states/histone_learn15/reorder/jurkat_15_segments_reorder.bed | sort -k 1,1 -k2,2n >/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/chromHMM_histones.bed
+grep -v "_" /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/jurkat_15_segments_reorder.bed | sort -k 1,1 -k2,2n >/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/chromHMM_histones7.bed
 
 for file in $(ls /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/*0.bed); do
   name=$(basename -s .bed ${file})
-  bedtools intersect -wo -f 0.5 -a ${file} -b /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/chromHMM_histones.bed  | awk '{OFS="\t"}; {print $1, $2, $3, $4, $8}' >/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/${name}_chromHMM.bed
+  bedtools intersect -wo -f 0.5 -a ${file} -b /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/chromHMM_histones7.bed  | awk '{OFS="\t"}; {print $1, $2, $3, $4, $8}' >/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/${name}_chromHMM7.bed
 done
 
 ######################################################################

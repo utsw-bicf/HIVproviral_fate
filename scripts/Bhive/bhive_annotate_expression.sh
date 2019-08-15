@@ -137,11 +137,16 @@ rm /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_f
 #setwd("/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/")
 #slices <- c(127, 71, 77, 607, 652, 24) #1,2,3,4+7,5+8,6
 #lbls <- c("Intergenic-Same", "Intergenic-Convergent", "Intergenic-Divergent", "Intragenic-Same", "Intragenic-Convergent", "Intragenic-Overlapping")
-#pdf("HIV_expression_pie.pdf")
+#pdf("HIV_expression_pie_OLD.pdf")
 #pie(slices, labels=lbls, main="B-HIVE integration")
 #dev.off()
 
-
+#setwd("/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_annotated_bedfiles/")
+#slices <- c(127, 71, 77, 581, 642, 60) #1,2,3,4,5,6+7+8
+#lbls <- c("Intergenic-Same", "Intergenic-Convergent", "Intergenic-Divergent", "Intragenic-Same", "Intragenic-Convergent", "Intragenic-2genes")
+#pdf("HIV_expression_pie.pdf")
+#pie(slices, labels=lbls, main="B-HIVE integration")
+#dev.off()
 
 
 

@@ -8,7 +8,7 @@ df <- HIVexp
 colnames(df) <- c("chr", "start", "end", "bc", "HIVexp")
 
 ### Add chromHMM
-chromHMM <- Sys.glob("hiv_expression_ML_*_chromHMM.bed")
+chromHMM <- Sys.glob("hiv_expression_ML_*_chromHMM7.bed")
 for (i in 1:length(chromHMM)) {
   rd <- read.csv(file = chromHMM[i], header = F, stringsAsFactors = F, sep="\t")
   rd <- rd[,c(1,4,5)]
@@ -29,7 +29,7 @@ for (i in 1:length(lamin)) {
 df[is.na(df)] <- 0
 
 ### Add Histone + 4 data
-HisP4 <- Sys.glob("hiv_expression_ML_*HisPlus4_filtered_peaks.tsv")
+HisP4 <- Sys.glob("hiv_expression_ML_*His7Plus4_filtered_peaks.tsv")
 for (i in 1:length(HisP4)) {
   rd3 <- read.csv(file = HisP4[i], header = T, stringsAsFactors = F, sep="\t")
   rd3 <- rd3[,-c(2:3)]
@@ -44,4 +44,4 @@ for (i in 1:length(HisP4)) {
 df[is.na(df)] <- 0
 
 setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/')
-write.table(df, file=("HIVexp_HisPlus4_chrom_lamin_4ML.tsv"), quote=F, col.names = T, row.names = F, sep = "\t")
+write.table(df, file=("HIVexp_His7Plus4_chrom_lamin_4ML.tsv"), quote=F, col.names = T, row.names = F, sep = "\t")
