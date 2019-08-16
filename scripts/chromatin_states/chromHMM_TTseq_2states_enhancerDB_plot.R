@@ -6,6 +6,72 @@ library(ggplot2)
 
 setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/two_state_chromHMM_TTseq/make_db/')
 
+A <- read.table("enhancers_150bp.bed", header=F, sep="\t")
+
+A$f <- A$V4+A$V5
+A$r <- A$V6+A$V7
+A$t <- A$f+A$r
+A$l <- A$V3-A$V2+1
+
+
+hist(A$t)
+hist(A$l)
+ggplot(A, aes(x=A$l, y=A$t)) + geom_point(shape=1)
+
+As <- A[which(A$l >9000),]
+ggplot(As, aes(x=As$l, y=As$t)) + geom_point(shape=1)
+
+ttrpkm2.b <- ttrpkm[which(ttrpkm$total > 1),]
+hist(ttrpkm2.b$total, breaks=150)
+ttrpkm2 <- ttrpkm[which(ttrpkm$length > 9000),]
+hist(ttrpkm2$length)
+hist(ttrpkm2$total)
+ggplot(ttrpkm2, aes(x=ttrpkm2$length, y=ttrpkm2$total))
+
+### Sort low to high on length and add rank
+ttrpkm2S <- ttrpkm2[order(ttrpkm2$length),]
+ttrpkm2S$rank <- 1:nrow(ttrpkm2S)
+
+ggplot(ttrpkm2S, aes(x=rank, y=total)) +
+  geom_point(shape=1)
+
+
+######################Not 12.5
+ori <- read.table("jurkat_2_notgenes_transcribed_inFandR.bed", header=T, sep="\t")
+ori$length <- ori$X34200-ori$X11600+1
+######################Not 12.5
+
+
+######################Annotations
+ann <- read.table("jurkat_2_notgenes_transcribed_inFandR_annotated2.bed", header=F, sep="\t")
+count <- table(ann$V15, ann$V20)
+cols = c("dodgerblue2", "#E31A1C", # red
+         "green4",
+         "#6A3D9A", # purple
+         "#FF7F00", # orange
+         "black", "gold1",
+         "skyblue2", "#FB9A99", # lt pink
+         "palegreen2",
+         "#CAB2D6", # lt purple
+         "#FDBF6F", # lt orange
+         "gray70", "khaki2",
+         "maroon", "orchid1", "deeppink1", "blue1", "steelblue4",
+         "darkturquoise", "green1", "yellow4", "yellow3",
+         "darkorange4", "brown")
+pdf("test.pdf")
+barplot(count, col= cols)
+dev.off()
+pdf("test2.pdf")
+barplot(count, col= cols, legend.text = T)
+dev.off()
+
+### Make a stacked bargraph of chromHMM with type
+
+
+
+######################Annotations
+
+
 ###
 ttrpkm <- read.table("jurkat_2_notgenes_transcribed_inFandR_merged12500_rpkm_filtered_peaks.tsv", header=T, sep="\t")
 ttrpkm$fwd <- ttrpkm$ttfwd87+ttrpkm$ttfwd88
@@ -23,14 +89,20 @@ hist(ttrpkm2$total)
 ggplot(ttrpkm2, aes(x=ttrpkm2$length, y=ttrpkm2$total))
 
 ### Sort low to high on length and add rank
+ttrpkm2S <- ttrpkm2[order(ttrpkm2$total),]
+ttrpkm2S$rank <- 1:nrow(ttrpkm2S)
+
+ggplot(ttrpkm2S, aes(x=rank, y=total)) +
+  geom_point(shape=1) 
+
+
+
+
 ttrpkm2S <- ttrpkm2[order(ttrpkm2$length),]
 ttrpkm2S$rank <- 1:nrow(ttrpkm2S)
 
 ggplot(ttrpkm2S, aes(x=rank, y=total)) +
   geom_point(shape=1)
-
-
-
 
 
 
