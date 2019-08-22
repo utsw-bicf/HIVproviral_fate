@@ -6,6 +6,57 @@ library(ggplot2)
 
 setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/two_state_chromHMM_TTseq/make_db/')
 
+enh <- read.table("enhancer_150min_merged12500_rpkm_filtered_peaks.tsv", header=T, sep="\t")
+
+enh$fwd <- enh$ttfwd87+enh$ttfwd88
+enh$rev <- enh$ttrev87+enh$ttrev88
+enh$total <- enh$fwd+enh$rev
+enh$length <- enh$end-enh$start
+enh$diff <- round(abs(enh$fwd/enh$rev),digits=2)
+
+hist(enh$total)
+hist(enh$length)
+enh2.b <- enh[which(enh$total > 1),]
+hist(enh2.b$total, breaks=150)
+enh2 <- enh[which(enh$length > 9000),]
+hist(enh2$length)
+hist(enh2$total)
+ggplot(enh2, aes(x=enh2$length, y=enh2$total))
+
+### Sort low to high on length and add rank
+enh2S <- enh2[order(enh2$total),]
+enh2S$rank <- 1:nrow(enh2S)
+
+ggplot(enh2S, aes(x=rank, y=total)) +
+  geom_point(shape=1) 
+
+
+enh3 <- enh[which(enh$total > 1),]
+enh4 <- enh3[which(enh3$length > 9000),]
+enh4$bm <- round(enh4$total*enh4$diff,digits = 2)
+enh4S <- enh4[order(enh4$total),]
+enh4S$rank <- 1:nrow(enh4S)
+
+ggplot(enh4S, aes(x=rank, y=total)) +
+  geom_point(shape=1) 
+
+# based on diff
+enh4S <- enh4[order(enh4$diff),]
+enh4S$rank <- 1:nrow(enh4S)
+
+ggplot(enh4S, aes(x=rank, y=total)) +
+  geom_point(shape=1) 
+
+enh5 <- enh4S[which(enh4$total > 1 & enh4$diff <1),]
+ggplot(enh4S, aes(x=total, y=diff)) +
+  geom_point(shape=1) 
+enh6 <- enh4S[which(enh4S$total > 12.5 & enh4S$diff < 3),]
+ggplot(enh6, aes(x=total, y=diff)) +
+  geom_point(shape=1) 
+
+
+
+
 A <- read.table("enhancers_150bp.bed", header=F, sep="\t")
 
 A$f <- A$V4+A$V5
