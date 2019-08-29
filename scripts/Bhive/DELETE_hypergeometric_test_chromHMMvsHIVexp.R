@@ -12,8 +12,7 @@ setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHI
 hivexp <- read.table(file="/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/hiv_expression.txt", header=T, sep='\t')
 
 ### Load chromHMM; 15 states, histone only
-chromHMM <- read.table(file="/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/jurkat_15_segments_reorder.bed", header=F, sep='\t', skip=1)
-chromHMM$V4 <- gsub("U", "\\1", chromHMM$V4)
+chromHMM <- read.table(file="/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone/learn_states/histone_learn15/jurkat_15_dense_chr.bed", header=F, sep='\t', skip=1)
 
 ### Add state to BHIVE expression
 ihivexp <- with(hivexp, IRanges(locus, width=1, names=chr))
@@ -22,37 +21,14 @@ olaps <- findOverlaps(ihivexp, ichromHMMs)
 df <- cbind(hivexp[queryHits(olaps),], chromHMM[subjectHits(olaps),])
 df2 <- df[which(as.character(df$chr) == as.character(df$V1)),]
 
-
 ######################################################################
 ######################################################################
 ######################################################################
-### Loop through hypergeomtric
-
-total <- sum(chromHMM$V3-chromHMM$V2+1)
-pr2 <- data.frame()
-for (i in c(1:15)) {
-  HMMr <- df2[df2$V4 == i,]
-  chromr <- chromHMM[chromHMM$V4 == i,]
-  HMMtotal <- sum(chromr$V3-chromr$V2+1)
-  NROW(HMMr)
-  NROW(df2)
-  HMMtotal/total
-  hgt <- as.data.frame(t(rbind(phyper(NROW(HMMr), HMMtotal, (total-HMMtotal), NROW(df2), lower.tail=F), dhyper(NROW(HMMr), HMMtotal, (total-HMMtotal), NROW(df2), log=T))))
-  hgt$state <- i
-  hgt$actual <- NROW(HMMr)
-  hgt$percentgenome <- format(HMMtotal/total,5)
-  hgt$perHMM <- (NROW(HMMr))/(NROW(df2))
-  pr2 <- rbind(pr2,hgt)
-}
-#rownames(pr2) <- c(1:15)
-colnames(pr2) <- c("phyper", "log(dhyper)", "state", "insertion_count", "state_pct_genome", "pct_insertions")
-
-write.table(pr2, file=("hypergeometric_test.txt"), quote=F, row.names = F, sep='\t')
 
 ########## Loop through states, chance
 total <- sum(chromHMM$V3-chromHMM$V2+1)
 pr1 <- data.frame()
-for (i in c(1:15)) {
+for (i in c(1:7,9:15)) {
   HMMr <- df2[df2$V4 == i,]
   chromr <- chromHMM[chromHMM$V4 == i,]
   HMMtotal <- sum(chromr$V3-chromr$V2+1)
@@ -66,12 +42,15 @@ for (i in c(1:15)) {
   pt$perHMM <- (NROW(HMMr))/(NROW(df2))
   pr1 <- rbind(pr1,pt)
 }
+rownames(pr1) <- c(1:7,9:15)
+
+
 
 ##########
 ########## Loop through states, more
 total <- sum(chromHMM$V3-chromHMM$V2+1)
 prm <- data.frame()
-for (i in c(1:15)) {
+for (i in c(1:7,9:15)) {
   HMMr <- df2[df2$V4 == i,]
   chromr <- chromHMM[chromHMM$V4 == i,]
   HMMtotal <- sum(chromr$V3-chromr$V2+1)
@@ -85,12 +64,13 @@ for (i in c(1:15)) {
   pt$perHMM <- (NROW(HMMr))/(NROW(df2))
   prm <- rbind(prm,pt)
 }
+rownames(prm) <- c(1:7,9:15)
 
 ##########
 ########## Loop through states, less
 total <- sum(chromHMM$V3-chromHMM$V2+1)
 prl <- data.frame()
-for (i in c(1:15)) {
+for (i in c(1:7,9:15)) {
   HMMr <- df2[df2$V4 == i,]
   chromr <- chromHMM[chromHMM$V4 == i,]
   HMMtotal <- sum(chromr$V3-chromr$V2+1)
@@ -104,9 +84,36 @@ for (i in c(1:15)) {
   pt$perHMM <- (NROW(HMMr))/(NROW(df2))
   prl <- rbind(prl,pt)
 }
+rownames(prl) <- c(1:7,9:15)
+
+
+
+######################################################################
+######################################################################
+######################################################################
+### Loop through hypergeomtric
+
+total <- sum(chromHMM$V3-chromHMM$V2+1)
+pr2 <- data.frame()
+for (i in c(1:7,9:15)) {
+  HMMr <- df2[df2$V4 == i,]
+  chromr <- chromHMM[chromHMM$V4 == i,]
+  HMMtotal <- sum(chromr$V3-chromr$V2+1)
+  NROW(HMMr)
+  NROW(df2)
+  HMMtotal/total
+  hgt <- as.data.frame(t(rbind(phyper(NROW(HMMr), HMMtotal, (total-HMMtotal), NROW(df2), lower.tail=F), dhyper(NROW(HMMr), HMMtotal, (total-HMMtotal), NROW(df2), log=T))))
+  hgt$state <- i
+  hgt$actual <- NROW(HMMr)
+  hgt$percentgenome <- format(HMMtotal/total,5)
+  hgt$perHMM <- (NROW(HMMr))/(NROW(df2))
+  pr2 <- rbind(pr2,hgt)
+}
+rownames(pr2) <- c(1:7,9:15)
+colnames(pr2) <- c("phyper", "log(dhyper)", "state", "insertion_count", "state_pct_genome", "pct_insertions")
+
 
 write.table(pr1, file=("prob.test_two.ways.txt"), quote=F, row.names = F, sep='\t')
 write.table(prl, file=("prob.test_less.txt"), quote=F, row.names = F, sep='\t')
 write.table(prm, file=("prob.test_more.txt"), quote=F, row.names = F, sep='\t')
-
-
+write.table(pr2, file=("hypergeometric_test.txt"), quote=F, row.names = F, sep='\t')
