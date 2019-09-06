@@ -164,3 +164,14 @@ bedToBigBed -as=interact.as -type=bed5+13 loop.bed /project/shared/bicf_workflow
 awk 'FNR>1 {OFS="\t"}; $1 == $4 {print $1, $2, $6, "HiCloop", "1", "1", ".", 0, $1, $2, $3, ".", ".", $4, $5, $6, ".", "."}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/HOMER/std_HicHomerTagDir/merge_lib/lib.tad.2D.bed | sort -k 1,1 -k 2,2n >tad.bed
 
 bedToBigBed -as=interact.as -type=bed5+13 tad.bed /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes Hi-C_tad.bigBed
+
+
+### Enhancers
+sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/zr_Enhancer.bed > delete.bed 
+bedToBigBed -type=bed3 delete.bed /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes Enhancers.bigBed
+rm delete.bed
+
+### SuperEnhancers
+sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/zv_SuperEnhancer.bed >delete.bed
+bedToBigBed -type=bed3 delete.bed /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes SuperEnhancers.bigBed
+rm delete.bed

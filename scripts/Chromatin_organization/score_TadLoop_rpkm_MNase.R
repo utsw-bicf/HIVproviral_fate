@@ -13,8 +13,8 @@ uInLoop <- inloop[!duplicated(inloop[,c("chrHIV","HIVstart","HIVend")]),]
 nuInLoop <- inloop[duplicated(inloop[,c("chrHIV","HIVstart","HIVend")]),]
 
 ### Plot unique by x = HIV expression y= MNase rpkm
-pdf("BHIVE_expression_1x_inLoopscored.pdf")
-ggplot(uInLoop, aes(x=HIVexp, y=MNase)) + 
+pdf("plots/BHIVE_expression_1x_inLoopscored.pdf")
+ggplot(uInLoop, aes(x=HIVexp, y=H3K27me3)) + 
   scale_color_manual(values=c("#0072B2")) +
   geom_point() + 
   #geom_smooth(method=lm, se=FALSE) +
@@ -22,7 +22,7 @@ ggplot(uInLoop, aes(x=HIVexp, y=MNase)) +
   xlab("Log10 HIV Expression") + 
   ylab("MNase-seq rpkm in loop") + 
   scale_x_continuous(limits=c(-3.5, 3)) +
-  scale_y_continuous(limits=c(0, 1)) +
+ # scale_y_continuous(limits=c(0, 1)) +
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -32,8 +32,8 @@ ggplot(uInLoop, aes(x=HIVexp, y=MNase)) +
 dev.off()
 
 ### Plot unique by x = HIV expression y= MNase rpkm
-pdf("BHIVE_expression_2plus_inLoopscored.pdf")
-ggplot(nuInLoop, aes(x=HIVexp, y=MNase)) + 
+pdf("plots/BHIVE_expression_2plus_inLoopscored.pdf")
+ggplot(nuInLoop, aes(x=HIVexp, y=H3K27me3)) + 
   scale_color_manual(values=c("#0072B2")) +
   geom_point() + 
   #geom_smooth(method=lm, se=FALSE) +
@@ -41,7 +41,7 @@ ggplot(nuInLoop, aes(x=HIVexp, y=MNase)) +
   xlab("Log10 HIV Expression") + 
   ylab("MNase-seq rpkm in loop") + 
   scale_x_continuous(limits=c(-3.5, 3)) +
-  scale_y_continuous(limits=c(0, 1)) +
+ # scale_y_continuous(limits=c(0, 1)) +
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -119,8 +119,8 @@ uInLoop <- inloop[!duplicated(inloop[,c("chrHIV","HIVstart","HIVend")]),]
 nuInLoop <- inloop[duplicated(inloop[,c("chrHIV","HIVstart","HIVend")]),]
 
 ### Plot unique by x = HIV expression y= MNase rpkm
-pdf("BHIVE_expression_1x_inLoopscored.pdf")
-ggplot(uInLoop, aes(x=HIVexp, y=MNase)) + 
+pdf("plots/BHIVE_expression_1x_inLoopscored.pdf")
+ggplot(uInLoop, aes(x=HIVexp, y=H3K27me3)) + 
   scale_color_manual(values=c("#0072B2")) +
   geom_point() + 
   #geom_smooth(method=lm, se=FALSE) +
@@ -128,7 +128,7 @@ ggplot(uInLoop, aes(x=HIVexp, y=MNase)) +
   xlab("Log10 HIV Expression") + 
   ylab("MNase-seq rpkm in loop") + 
   scale_x_continuous(limits=c(-3.5, 3)) +
-  scale_y_continuous(limits=c(0, 1)) +
+  #scale_y_continuous(limits=c(0, 1)) +
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -138,8 +138,8 @@ ggplot(uInLoop, aes(x=HIVexp, y=MNase)) +
 dev.off()
 
 ### Plot unique by x = HIV expression y= MNase rpkm
-pdf("BHIVE_expression_2plus_inLoopscored.pdf")
-ggplot(nuInLoop, aes(x=HIVexp, y=MNase)) + 
+pdf("plots/BHIVE_expression_2plus_inLoopscored.pdf")
+ggplot(nuInLoop, aes(x=HIVexp, y=H3K27me3)) + 
   scale_color_manual(values=c("#0072B2")) +
   geom_point() + 
   #geom_smooth(method=lm, se=FALSE) +
@@ -147,7 +147,7 @@ ggplot(nuInLoop, aes(x=HIVexp, y=MNase)) +
   xlab("Log10 HIV Expression") + 
   ylab("MNase-seq rpkm in loop") + 
   scale_x_continuous(limits=c(-3.5, 3)) +
-  scale_y_continuous(limits=c(0, 1)) +
+ # scale_y_continuous(limits=c(0, 1)) +
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
