@@ -93,10 +93,45 @@ fastqs="SRR5261759 SRR5261760 SRR5261761 SRR5261762"
 module load macs/2.1.0-20151222
 #echo "#################### START calling peaks ####################"
 
+macs2 callpeak \
+  -t /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261760_filt.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261762_filt.bam \
+  -c /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261759_filt.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261761_filt.bam \
+  -n damIDseq \
+  -g hs \
+  --keep-dup all \
+  --bw 300 \
+  --qvalue 0.05 \
+  --mfold 5 50 \
+  --broad \
+  --broad-cutoff 0.1 \
+  -B
+
+### Filter for significant
+awk '{OFS="\t"}; $9>1.3 && $7 > 2 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks.broadPeak >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks_sig.broadPeak
+
+### Convert bedgraph to bw
+module load UCSC_userApps/v317 
+
+macs2 bdgcmp -t damIDseq_treat_pileup.bdg \
+  -c damIDseq_control_lambda.bdg \
+  -o damIDseq_FE.bdg \
+  -m FE
+
+bedSort /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_FE.bdg /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_sorted.bedGraph
+
+bedGraphToBigWig /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_sorted.bedGraph /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_signal.bw
+
+#echo "#################### END calling peaks ####################"
+
+
+########## Don't use below
+### call peaks on unfiltered reads
+#echo "#################### START calling peaks ####################"
+
 #macs2 callpeak \
-#  -t /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261760_filt.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261762_filt.bam \
-#  -c /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261759_filt.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/counts/SRR5261761_filt.bam \
-#  -n damIDseq \
+#  -t /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261760.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261762.bam \
+#  -c /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261759.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261761.bam \
+#  -n damIDseq_unfilt \
 #  -g hs \
 #  --keep-dup all \
 #  --bw 300 \
@@ -106,25 +141,5 @@ module load macs/2.1.0-20151222
 #  --broad-cutoff 0.1
 
 ### Filter for significant
-#awk '{OFS="\t"}; $9>1.3 && $7 > 2 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks.broadPeak >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks_sig.broadPeak
-#echo "#################### END calling peaks ####################"
-
-
-### call peaks on unfiltered reads
-#echo "#################### START calling peaks ####################"
-
-macs2 callpeak \
-  -t /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261760.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261762.bam \
-  -c /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261759.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/mapped/SRR5261761.bam \
-  -n damIDseq_unfilt \
-  -g hs \
-  --keep-dup all \
-  --bw 300 \
-  --qvalue 0.05 \
-  --mfold 5 50 \
-  --broad \
-  --broad-cutoff 0.1
-
-### Filter for significant
-awk '{OFS="\t"}; $9>1.3 && $7 > 2 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_unfilt_peaks.broadPeak >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_unfilt_peaks_sig.broadPeak
+#awk '{OFS="\t"}; $9>1.3 && $7 > 2 {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_unfilt_peaks.broadPeak >/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_unfilt_peaks_sig.broadPeak
 #echo "#################### END calling peaks ####################"

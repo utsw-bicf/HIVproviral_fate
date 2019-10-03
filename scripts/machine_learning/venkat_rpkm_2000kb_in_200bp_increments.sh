@@ -114,6 +114,18 @@ done
 ######################################################################
 ######################################################################
 ######################################################################
+### Add damID seq
+### Since this technique requires subtraction, use the bedgraph to get the number
+for file in $(ls /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/*0.bed); do
+  name=$(basename -s .bed ${file})
+  perl ~/Desktop/Holly_git/collaborations/issue141_DOrsoIvan/scripts/machine_learning/add_damID_array.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_sorted.bedGraph ${file} >/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/${name}_damID_array.bed
+done
+
+
+
+######################################################################
+######################################################################
+######################################################################
 # Combine the files and add expression table
 awk '{OFS="\t"} {print $1, $2, $3,$4, $5}' /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/hiv_expression.bed | sort -k 1,1 -k2,2n | uniq -u >/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/hiv_expression_table_withname.txt
 ### add expression values to output files; R
