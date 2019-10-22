@@ -28,7 +28,7 @@ rm delete.narrowPeak
 
 ### ChiP-seq H3K4me3; replicated narrowPeak from consensus peaks all experiment
 awk '{OFS="\t"}; $1 !~ /_/ {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K4me3.replicated.narrowPeak | sort -k 1,1 -k 2,2n >delete.narrowPeak
-bedToBigBed -type=bed6+3 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes H3K4me3_replicated_peaks.bigBed
+bedToBigBed -type=bed6+4 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes H3K4me3_replicated_peaks.bigBed
 rm delete.narrowPeak
 
 
@@ -139,11 +139,11 @@ awk 'FNR>1 {OFS="\t"; print $3, $4, $4+1, $10}' /project/BICF/BICF_Core/shared/P
 tabix -p bed HIV_expression.bedGraph.gz 
 
 ### DamIDseq; replicated broadPeak from consensus peaks all experiments
-awk '{OFS="\t"}; $1 !~ /_/ {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks_sig.broadPeak | sort -k 1,1 -k 2,2n >delete.narrowPeak
-bedToBigBed -type=bed6+4 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes DamID_peaks.bigBed
-rm delete.narrowPeak
-
-
+#awk '{OFS="\t"}; $1 !~ /_/ {print $0}' /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_peaks_sig.broadPeak | sort -k 1,1 -k 2,2n >delete.narrowPeak
+#bedToBigBed -type=bed6+4 delete.narrowPeak /project/shared/bicf_workflow_ref/human/GRCh38/chrom.sizes DamID_peaks.bigBed
+#rm delete.narrowPeak
+sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/damIDseq/call_peaks/damIDseq_sorted.bedGraph | bgzip >damIDseq.bedGraph.gz
+tabix -p bed damIDseq.bedGraph.gz
 
 ### Hi-ChiP Data; HiChipper
 awk '{OFS="\t"}; $8 < 0.05 && $1 == $4 {print $1, $2, $6, "hichipper_rep1", $7, $7, ".", 0, $1, $2, $3, ".", ".", $4, $5, $6, ".", "."}' /project/BICF/BICF_Core/shared/Projects/Dorso/Transcription_factor_activity/HiC_pro/HiChipper/YY1_peaks_all/rep1.interactions.all.mango >rep1.bed
