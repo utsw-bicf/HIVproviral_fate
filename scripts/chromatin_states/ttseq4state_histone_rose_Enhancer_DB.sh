@@ -6,7 +6,7 @@
 #SBATCH --mail-user=holly.ruess@utsouthwestern.edu
 #SBATCH --mail-type=END
 
-### This script uses a 2 state hidden markov model to find transcribed/not in all ttseq, fwd ttseq, rev ttseq
+### This script uses a 4 state hidden markov model to find transcribed/not in all ttseq, fwd ttseq, rev ttseq
 ### Then remove protein coding genes plus/minus 2kb
 ### Remove all RNAseq transcribed ("stable") regions
 ### Overlap with ChiP-seq

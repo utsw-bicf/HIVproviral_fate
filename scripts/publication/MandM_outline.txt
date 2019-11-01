@@ -1,42 +1,34 @@
 Outline of the materials and methods for HIV project
 
 1) DNAse-seq
-Fastq files ENCFF001DPG and ENCFF001DPF was downloaded from the ENCODE project. Files were processed with an in-house pipeline. Briefly, we used trimgalore version 0.4.1 (Martin, 2011) on the raw reads to remove reads shorter than 35bp or with phred quality scores less than 20 and then aligned trimmed reads to the human reference genome (GRCh38) using default parameters in BWA samse version 0.7.12 (Li and Durbin, 2009). The aligned reads were subsequently filtered for quality and uniquely mappable reads were retained for further analysis using Samtools version 1.3 (Li et al., 2009) and Sambamba version 0.6.6 (Tarasov et al., 2015). Relaxed peaks were called using MACS version 2.1.0 (Zhang et al., 2008) with the following parameters: -p 1e-2 --nomodel --shift -100 --extsize 200 --keep-dup all -B --SPMR. Peaks that overlap at least 50% between replicates were retained.
+Files were processed with a modified Nextflow (Tommaso et al., 2017), BICF ChiP-seq Analysis Workflow version 1.0.0 (Barnes et al., 2019). Briefly, we used trimgalore version 0.4.1 (Martin, 2011) on the raw reads to remove reads shorter than 35bp or with phred quality scores less than 20 and then aligned trimmed reads to the human reference genome (GRCh38) using default parameters in BWA samse version 0.7.12 (Li and Durbin, 2009). The aligned reads were subsequently filtered for quality and uniquely, mappable reads were retained for further analysis using SAMtools version 1.3 (Li et al., 2009) and Sambamba version 0.6.6 (Tarasov et al., 2015). Relaxed peaks were called using MACS version 2.1.0 (Zhang et al., 2008) with the following parameters: -p 1e-2 --nomodel --shift -100 --extsize 200 --keep-dup all -B --SPMR. Peaks that overlap at least 50% between replicates were retained.
 
 2) MNase-seq
-**** Not Deposited****
-Files were processed with an in-house pipeline. Briefly, we used trimgalore version 0.4.1 (Martin, 2011) on the raw reads to remove reads shorter than 35bp or with phred quality scores less than 20 and then aligned trimmed reads to the human reference genome (GRCh38) using default parameters in BWA sampe version 0.7.12 (Li and Durbin, 2009). The aligned reads were subsequently filtered for quality and uniquely mappable reads were retained for further analysis using Samtools version 1.3 (Li et al., 2009) and Sambamba version 0.6.6 (Tarasov et al., 2015), and bedtools version 2.26.0 (Quinlan and Hall, 2010) bamtobed converted the bed file to tagalign. Peaks were called with iNPS version 1.2.2 (Chen et al., 2014) and filtered for a -log10(Pvalue_of_peak) < 0.05.
+Files were processed with a modified Nextflow (Tommaso et al., 2017), BICF ChiP-seq Analysis Workflow version 1.0.0 (Barnes et al., 2019). Briefly, we used trimgalore version 0.4.1 (Martin, 2011) on the raw reads to remove reads shorter than 35bp or with phred quality scores less than 20 and then aligned trimmed reads to the human reference genome (GRCh38) using default parameters in BWA sampe version 0.7.12 (Li and Durbin, 2009). The aligned reads were subsequently filtered for quality and uniquely mappable reads were retained for further analysis using SAMtools version 1.3 (Li et al., 2009) and Sambamba version 0.6.6 (Tarasov et al., 2015), and bedtools version 2.26.0 (Quinlan and Hall, 2010) bamtobed converted the bed file to tagalign. Peaks were called with iNPS version 1.2.2 (Chen et al., 2014) and filtered for a -log10(Pvalue_of_peak) of less than 0.05.
 
 3) Chip-seq
-Fastq files SRR061744, SRR074203, SRR1057276, SRR1522115, SRR1522118, SRR1603646, SRR1603648, SRR1603649, SRR1603650, SRR1603652, SRR2043612, SRR2043614, SRR3722570, SRR3722573, SRR577482, SRR577483, SRR6010201, SRR6010202, SRR3722566, SRR1791460, SRR1791461, SRR1791462, SRR1791463, SRR1791464, SRR1791465, SRR061743, SRR577484, SRR1603654, SRR061747, SRR647929, SRR2157609, SRR3722577, SRR1791514, SRR1791515, SRR1791516, SRR1791517, SRR1791518, SRR1791519, SRR1791493, SRR1791494, SRR1791495, SRR1791496, SRR1791497, SRR1791498, SRR1791425, SRR1791426, SRR1791427, SRR1791428, SRR1791429, SRR1791430, SRR1791404, SRR1791405, SRR1791406, SRR1791407, SRR1791408, SRR1791409, SRR1791437, SRR1791438, SRR1791439, SRR1791440, SRR1791441, SRR1791442, SRR1791505, SRR1791506, SRR1791507, SRR1791508, SRR1791509, SRR1791510, SRR1791413, SRR1791414, SRR1791415, SRR1791416, SRR1791417, SRR1791418, SRR074201, SRR074195, SRR074196, SRR1791449, SRR1791450, SRR1791451, SRR1791452, SRR1791453, SRR1791454, SRR1791484, SRR1791485, SRR1791486, SRR1791487, SRR1791488, SRR1791489, SRR1791472, SRR1791473, SRR1791474, SRR1791475, SRR1791476, SRR1791477, SRR3722566, SRR1522115, SRR6010201 were downloaded from NCBI SRA (Leinonen et al., 2011). 
+The Nextflow (Tommaso et al., 2017) BICF ChiP-seq Analysis Workflow version 1.0.0 (Barnes et al., 2019) proccessed all ChiP-seq files, merging separate experiments as technical replicates. Briefly, reads were trimmed with trimgalore version 0.4.1 (Martin, 2011) (parameters: -q 25 --illumina --gzip --length 35), aligned with bwa aln (-q 5 -l 32 -k 2) and then bwa samse (standard parameters) version 0.7.12 (Li and Durbin, 2009), sorted and indexed with SAMtools version 1.3 (Li et al., 2009)(-F 1804 -q 30), and duplicates removed with Sambamba version 0.6.6 (Tarasov et al., 2015) (standard options). Bam files were converted to tagAlign with bedtools version 2.26.0 bamtobed (Quinlan and Hall, 2010), after which, samples were checked for quality control using deeptools version 2.5.0.1 multiBamSummary, plotCorrelation, plotCoverage, and plotFingerprint (all standard protocols) (Ramírez et al., 2016) and cross correlation analysis with phantompeakqualtools version 1.2 (Kharchenko et al., 2008 and Landt et al., 2012). Peaks were called with MACS2 version 2.1.0-20151222 (Zhang et al., 2008), using the predominant fragment length from the cross correlation analysis as --extsize (other parameters: -p 1e-2 --nomodel --shift 0 --keep-dup all -B --SPMR). Consensus peaks were called (bedtools version 2.26.0; Quinlan and Hall, 2010) and annotated (library ChIPseeker in R; Yu et al., 2015 and R Core Team, 2014) if at least 2 replicates or pseudoreplicates contained a peak.
 
-The nextflow (Tommaso et al., 2017) BICF ChiP-seq Analysis Workflow version 1.0.0 (Barnes et al., 2019) was ran with the design file (see supplemental info ???). Briefly, reads were trimmed with trimgalore version 0.4.1 (Martin, 2011) (parameters: -q 25 --illumina --gzip --length 35), aligned with bwa aln (-q 5 -l 32 -k 2) then samse (standard parameters) version 0.7.12 (Li and Durbin, 2009), sorted and indexed with Samtools version 1.3 (Li et al., 2009)(-F 1804 -q 30), and duplicates removed with Sambamba version 0.6.6 (Tarasov et al., 2015) (standard options). Bam files were converted to tagAlign with bedtools version 2.26.0 (Quinlan and Hall, 2010) bamtobed, after which, samples were checked for quality control using deeptools version 2.5.0.1 (Ramírez et al., 2016) multiBamSummary, plotCorrelation, plotCoverage, and plotFingerprint (all standard protocols) and cross correlation analysis with phantompeakqualtools version 1.2 (Kharchenko et al., 2008 and Landt et al., 2012). Peaks were called with Macs2 version 2.1.0-20151222 (Zhang et al., 2008), using the predominant fragment length from the cross correlation analysis as --extsize (other parameters: -p 1e-2 --nomodel --shift 0 --keep-dup all -B --SPMR). Consensus peaks were called and annotated if at least 2 replicates or pseudoreplicates If at least 2 replicates or pseudoreplicates contained a peak, consensus peaks were called (bedtools version 2.26.0; Quinlan and Hall, 2010) and annotated (library ChIPseeker in R; Yu et al., 2015 and R Core Team, 2014).
+4) RNAseq
+Files were processed with the BICF RNA-seq Analysis workflow version 0.5.5. Briefly, reads with phred quality scores less than 20 and less than 35 bp after trimming were removed from further analysis using trimgalore version 0.4.1 (Martin, 2011). Quality-filtered reads were then aligned to the human reference genome (GRCh38) using the HISAT version 2.0.1 (Pertea et al., 2016) aligner using default settings and marked duplicates using Sambamba version 0.6.6 (Tarasov et al., 2015). Aligned reads were quantified to coding sequences of known transcripts using ‘featurecount’ version 1.4.6 (Liao et al., 2014) per gene ID against Gencode version 25. 
 
-4) RNAseq, TTseq, 4sUseq
-**** Emily Not Deposited****
-4sUseq (GSM1833447,GSM1833448,GSM1833449), tt-Seq(GSM2260187, GSM2260188).
-Files were processed with an in-house pipeline BICF RNA-seq Analysis workflow version 0.5.5. Briefly, reads with phred quality scores less than 20 and less than 35 bp after trimming were removed from further analysis using trimgalore version 0.4.1 (Martin, 2011). Quality-filtered reads were then aligned to the human reference genome (GRCh38) using the HISAT version 2.0.1 (Pertea et al., 2016) aligner using default settings and marked duplicates using Sambamba version 0.6.6 (Tarasov et al., 2015). Aligned reads were quantified using ‘featurecount’ version 1.4.6 (Liao et al., 2014) per gene ID against Gencode version 25. 
+5) TTseq
+Files were processed a modified version of the BICF RNA-seq Analysis workflow version 0.5.5. Briefly, reads with phred quality scores less than 20 and less than 35 bp after trimming were removed from further analysis using trimgalore version 0.4.1 (Martin, 2011). Quality-filtered reads were then aligned to the human reference genome (GRCh38) using the HISAT version 2.0.1 (Pertea et al., 2016) aligner using default settings and marked duplicates using Sambamba version 0.6.6 (Tarasov et al., 2015). Aligned reads were quantified to the entire annotated transcript region using ‘featurecount’ version 1.4.6 (Liao et al., 2014) per gene ID against Gencode version 25. 
 
-
-5) Hi-C
-GSM3489136, GSM3489137
-
+6) Hi-C
 Reads were pooled per library an ran through the standard Hi-C pipeline using homer version 4.10.4 (Heinz et al., 2010). Briefly, reads were trimmed with homerTools trim -3 GATC -mis 0 -matchStart 20 -min 20, mapped to human reference genome (GRCh38, canonical) with bowtie2 version 2.2.8 (Langmead and Salzberg, 2012), and converted to tag directory (makeTagDirectory -genome hg38 -checkGC -restrictonSite GATC). Matrices are normalized with analyzeHiC (standard protocol), and tads/loops identified (findTADsAndLoops.pl -res 3000 -window 15000 -genome hg38 -p badRegions.bed). The USCS gap and genomicSuperDups were combined to make badRegions file. Tads and Loops from the 2 libraries were combined with merge2Dbed.pl
 
-6) DamID-seq
-GSE94971
-Reads were trimmed with cutadapt version 1.9.1 (Martin, 2011), attaching GATC to the adapter sequence (-a GATCCTCGGCCGCGACC -g ^GGTCGCGGCCGAGGATC), and mapped with bowtie2 version 2.3.2 (Langmead and Salzberg, 2012). Sam files were converted to bam and sorted with samtools version 1.3 (Li et al., 2009), and coverted to bed format with bedtools version 2.26.0 bamToBed (Quinlan and Hall, 2010). Reads that did not cross over a GATC site were kept (custom script) and filtered again if they touch a GATC site by extending the GATC site by 1 bp in each direction and using bedtools intersect version 2.26.0 (Quinlan and Hall, 2010). Broad peaks were called with Macs2 version 2.1.0-20151222 (-g hs --keep-dup all -bw 300 -qvalue 0.05 -mfold 5 50 --broad --broad-cutoff 0.1; Zhang et al., 2008) and filtered for a qvalue less than 0.05 and a signalValue greater than 2.
-
-
-
+7) DamID-seq
+Reads were trimmed with cutadapt version 1.9.1 (Martin, 2011), attaching GATC to the adapter sequence (-a GATCCTCGGCCGCGACC -g ^GGTCGCGGCCGAGGATC), and mapped with bowtie2 version 2.3.2 (Langmead and Salzberg, 2012). Sam files were converted to bam and sorted with SAMtools version 1.3 (Li et al., 2009), and coverted to bed format with bedtools version 2.26.0 bamToBed (Quinlan and Hall, 2010). Reads that did not cross over a GATC site were kept (custom script) and filtered again if they touch a GATC site by extending the GATC site by 1 bp in each direction and using bedtools intersect version 2.26.0 (Quinlan and Hall, 2010). Broad peaks were called with MACS2 version 2.1.0-20151222 (-g hs --keep-dup all -bw 300 -qvalue 0.05 -mfold 5 50 --broad --broad-cutoff 0.1) (Zhang et al., 2008) and filtered for a qvalue less than 0.05 and a signalValue greater than 2.
 
 8) BHIVE expression and integration
+BHIVE data was processed with the B-HIVE for single provirus transcriptomics docker container (https://github.com/gui11aume/BHIVE_for_single_provirus_transcriptomics).
 
 
 9) chromHMM with extra files
 
 
-7) HiChip
+10) Enhancers/SuperEnhancers
 
 
 
@@ -60,6 +52,8 @@ Ewels P., Magnusson M., Lundin S. and Käller M. 2016. MultiQC: Summarize analys
 
 Heinz S, Benner C, Spann N, Bertolino E et al. Simple Combinations of Lineage-Determining Transcription Factors Prime cis-Regulatory Elements Required for Macrophage and B Cell Identities. Mol Cell 2010 May 28;38(4):576-589.
 
+Hnisz et al., 2016 Science. 2016 Mar 25;351(6280):1454-1458. doi: 10.1126/science.aad9024
+
 Langmead B, Salzberg S. Fast gapped-read alignment with Bowtie 2. Nature Methods. 2012, 9:357-359.
 
 Liao Y1, Smyth GK, Shi W. 2014. featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. Bioinformatics 30:923-30. doi: 10.1093/bioinformatics/btt656
@@ -80,6 +74,8 @@ Li H., B. Handsaker, A. Wysoker, T. Fennell, J. Ruan, N. Homer, G. Marth, G. Abe
 
 Machanick P., and T. L. Bailey. 2011. MEME-ChIP: motif analysis of large DNA datasets. Bioinformatics 27(12): 1696-1697. doi:10.1093/bioinformatics/btr189
 
+Mansour et al., 2014. Science. 2014 Dec 12;346(6215):1373-7. doi: 10.1126/science.1259037
+
 Marcel, M. 2011. Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet.journal 17(1):10-12. doi:10.14806/ej.17.1.200
 
 Martin, M. (2011). Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet. journal, 17(1), pp-10.
@@ -91,6 +87,8 @@ Quinlan, A. R., and I. M. Hall. 2010. BEDTools: a flexible suite of utilities fo
 R Core Team 2014. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL:http://www.R-project.org/.
 
 Ramírez, F., D. P. Ryan, B. Grüning, V. Bhardwaj, F. Kilpert, A. S. Richter, S. Heyne, F. Dündar, and T. Manke. 2016. deepTools2: a next generation web server for deep-sequencing data analysis. Nucleic Acids Research 44: W160-165. doi:10.1093/nar/gkw257
+
+Reeder, J. E., Y-T Kwak, R. P. McNamara, C. V. Forst, I. D'Orso. 2015. HIV Tat controls RNA Polymerase II and the epigenetic landscape to transcriptionally reprogram target immune cells. eLife 2015;4:e08955 doi: 10.7554/eLife.08955.
 
 Ross-Innes C. S., R. Stark, A. E. Teschendorff, K. A. Holmes, H. R. Ali, M. J. Dunning,  G. D. Brown, O. Gojis, I. O. Ellis, A. R. Green, S. Ali, S. Chin, C. Palmieri, C. Caldas, and J. S. Carroll. 2012. Differential oestrogen receptor binding is associated with clinical outcome in breast cancer. Nature 481: 389-393. doi:10.1038/nature10730
 

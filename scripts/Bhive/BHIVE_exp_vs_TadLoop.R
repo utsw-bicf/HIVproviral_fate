@@ -114,3 +114,6 @@ for (i in c("Tad","Not in Tad")) {
 
 colnames(pr2) <- c("phyper", "log(dhyper)", "state", "insertion_count", "state_pct_genome", "pct_insertions")
 write.table(pr2, file=("Tad_hypergeometric_test.txt"), quote=F, row.names = F, sep='\t')
+
+
+

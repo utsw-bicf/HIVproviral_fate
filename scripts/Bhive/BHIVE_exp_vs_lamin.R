@@ -153,3 +153,82 @@ write.table(pr1, file=("Lamin_prob.test_two.ways.txt"), quote=F, row.names = F, 
 write.table(prl, file=("Lamin_prob.test_less.txt"), quote=F, row.names = F, sep='\t')
 write.table(prm, file=("Lamin_prob.test_more.txt"), quote=F, row.names = F, sep='\t')
 write.table(pr2, file=("Lamin_hypergeometric_test.txt"), quote=F, row.names = F, sep='\t')
+
+
+######################################################################
+######################################################################
+######################################################################
+######################################################################
+#### One way annova
+#### followed: http://www.sthda.com/english/wiki/one-way-anova-test-in-r
+
+setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_lamin')
+
+### Load file
+expLamin <- read.table(file="/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/HIVexp_His7Plus4_chrom_lamin_4ML.tsv", 
+                       header = T, sep = "\t", stringsAsFactors = FALSE)
+
+expLamin <- expLamin[!expLamin$chr == "chrUn_GL000195v1", ]
+
+### reduce to 2 important columsn
+rEL <- expLamin[c("HIVexp", "lamin_0_200")]
+rEL$lamin_0_200[rEL$lamin_0_200 == '0'] <- "Unknown"
+
+### make levels in proper order
+rEL$lamin_0_200 <- factor(rEL$lamin_0_200,levels = c("A1", "A2", "B1", "B2", "B3", "B4", "Unknown"))
+levels(rEL$lamin_0_200)
+
+### Calculate summary stats
+library(dplyr)
+sumStats <- group_by(rEL, lamin_0_200) %>%
+  summarise(
+    count = n(),
+    mean = mean(HIVexp, na.rm = TRUE),
+    sd = sd(HIVexp, na.rm = TRUE)
+  )
+
+# Compute the analysis of variance
+res.aov <- aov(HIVexp ~ lamin_0_200, data = rEL)
+
+# Summary of the analysis
+summary(res.aov)
+
+### This result means that there ARE differences in the group
+### Need to do a two-way to determine which group
+
+# Tukey multiple pairwise-comparisons
+TukeyHSD(res.aov)
+
+# Multiple comparisons using multcomp package
+library(multcomp)
+summary(glht(res.aov, linfct = mcp(lamin_0_200 = "Tukey")))
+
+# Pairewise t-test
+pairwise.t.test(rEL$HIVexp, rEL$lamin_0_200, p.adjust.method = "BH")
+
+# Check the homogeneity of variance assumption
+plot(res.aov, 1)
+
+library(car)
+leveneTest(HIVexp ~ lamin_0_200, data = rEL)
+
+### !!! This test was significant, cannot assume homogeneity of variances
+# ANOVA test with no assumption of equal variances
+oneway.test(HIVexp ~ lamin_0_200, data = rEL)
+
+# Pairwise t-tests with no assumption of equal variances
+pairwise.t.test(rEL$HIVexp, rEL$lamin_0_200,
+                p.adjust.method = "BH", pool.sd = FALSE)
+
+# Check the normality assumption
+plot(res.aov, 2)
+
+# Extract the residuals
+aov_residuals <- residuals(object = res.aov )
+# Run Shapiro-Wilk test
+shapiro.test(x = aov_residuals )
+
+### !!! This test was significant, cannot assume normality 
+kruskal.test(HIVexp ~ lamin_0_200, data = rEL)
+
+pairwise.wilcox.test(rEL$HIVexp, rEL$lamin_0_200, p.adjust.method = "BH")
