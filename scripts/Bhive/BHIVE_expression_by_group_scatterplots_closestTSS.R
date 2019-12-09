@@ -39,10 +39,10 @@ df <- rbind(g1, g2, g3, g4, g5)
 
 ### Make scatter plot
 ### add pearson correlation manually
-### "#CC79A7", "#D55E00", "#0072B2", "#F0E442", "#009E73"
+### "#ff0000", "#D55E00", "#0072B2", "#808080", "#009E73"
 pdf("BHIVE_expression_scatterplot_closestTSS_all.pdf")
 ggplot(df, aes(x=logDis, y=V11, size=V8, color=group)) + 
-  scale_color_manual(values=c("#CC79A7", "#D55E00", "#0072B2", "#F0E442", "#009E73")) +
+  scale_color_manual(values=c("#ff0000", "#D55E00", "#0072B2", "#808080", "#009E73")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("Correlation of HIV Expression to Nearest TSS") + 
@@ -51,10 +51,10 @@ ggplot(df, aes(x=logDis, y=V11, size=V8, color=group)) +
   scale_x_continuous(limits=c(2, 6.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
   annotate("text", x = 2.0, y = 3, label = "Intergenic Same r = -0.13 (p-value = 0.14)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.0, y = 2.85, label = "Intergenic Convergent r = -0.19 (p-value = 0.11)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 2.0, y = 2.85, label = "Intergenic Convergent r = -0.19 (p-value = 0.11)", size=3, color = "#ff0000", hjust=0) + ###This line needs to be manually changed
   annotate("text", x = 2.0, y = 2.70, label = "Intergenic Divergent r = -0.16 (p-value = 0.15)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
   annotate("text", x = 2.0, y = 2.55, label = "Intragenic Same r = -0.13 (p-value = 0.0012)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.0, y = 2.40, label = "Intragenic Convergent r = -0.23 (p-value = 0.0000000064)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 2.0, y = 2.40, label = "Intragenic Convergent r = -0.23 (p-value = 0.0000000064)", size=3, color = "#808080", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -86,7 +86,7 @@ dev.off()
 
 pdf("BHIVE_expression_scatterplot_closestTSS_group2.pdf")
 ggplot(g2, aes(x=logDis, y=V11, size=V8, color=group)) + 
-  scale_color_manual(values=c("#CC79A7")) +
+  scale_color_manual(values=c("#ff0000")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("Correlation of HIV Expression to Nearest TSS") + 
@@ -94,7 +94,7 @@ ggplot(g2, aes(x=logDis, y=V11, size=V8, color=group)) +
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(2, 6.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.0, y = 3, label = "Intergenic Convergent r = -0.19 (p-value = 0.11)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 2.0, y = 3, label = "Intergenic Convergent r = -0.19 (p-value = 0.11)", size=3, color = "#ff0000", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -143,7 +143,7 @@ dev.off()
 
 pdf("BHIVE_expression_scatterplot_closestTSS_group5.pdf")
 ggplot(g5, aes(x=logDis, y=V11, size=V8, color=group)) + 
-  scale_color_manual(values=c("#F0E442")) +
+  scale_color_manual(values=c("#808080")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("Correlation of HIV Expression to Nearest TSS") + 
@@ -151,7 +151,7 @@ ggplot(g5, aes(x=logDis, y=V11, size=V8, color=group)) +
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(2, 6.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.0, y = 3, label = "Intragenic Convergent r = -0.23 (p-value = 0.0000000064)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 2.0, y = 3, label = "Intragenic Convergent r = -0.23 (p-value = 0.0000000064)", size=3, color = "#808080", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),

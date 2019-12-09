@@ -54,23 +54,23 @@ df <- rbind(g1r, g2r, g3r, g4r, g5r,g6r)
 
 ### Make scatter plot
 ### add pearson correlation manually
-### "#CC79A7", "#D55E00", "#0072B2", "#F0E442", "#009E73"
+### "#ff0000", "#D55E00", "#0072B2", "#808080", "#009E73"
 pdf("BHIVE_expression_scatterplot_closestEnhancer_all.pdf")
 ggplot(df, aes(x=logDis, y=exp, size=mapq, color=group)) + 
-  scale_color_manual(values=c("#CC79A7", "#D55E00", "#0072B2", "#F0E442", "#009E73","#9933CC")) +
+  scale_color_manual(values=c("#ff0000", "#D55E00", "#0072B2", "#808080", "#009E73","#9933CC")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("Correlation of HIV Expression to Nearest Enhancer") + 
   xlab("Log10 Distance to Enhancer") + 
   ylab("HIV Expression") + 
-  scale_x_continuous(limits=c(2.5, 7)) +
+  scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.5, y = 3, label = "Intergenic Same r = -0.13 (p-value = 0.14)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.5, y = 2.85, label = "Intergenic Convergent r = -0.05 (p-value = 0.69)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.5, y = 2.70, label = "Intergenic Divergent r = -0.12 (p-value = 0.32)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.5, y = 2.55, label = "Intragenic Same r = -0.01 (p-value = 0.80)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.5, y = 2.40, label = "Intragenic Convergent r = -0.03 (p-value = 0.38)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 2.5, y = 2.25, label = "Overlaps 2 Genes r = 0.14 (p-value = 0.27)", size=3, color = "#9933CC", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Intergenic Same r = -0.13 (p-value = 0.14)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 2.85, label = "Intergenic Convergent r = -0.05 (p-value = 0.69)", size=3, color = "#ff0000", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 2.70, label = "Intergenic Divergent r = -0.12 (p-value = 0.32)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 2.55, label = "Intragenic Same r = -0.01 (p-value = 0.80)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 2.40, label = "Intragenic Convergent r = -0.03 (p-value = 0.38)", size=3, color = "#808080", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 2.25, label = "Overlaps 2 Genes r = 0.14 (p-value = 0.27)", size=3, color = "#9933CC", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -89,9 +89,9 @@ ggplot(g1r, aes(x=logDis, y=exp, size=mapq, color=group)) +
   ggtitle("Correlation of HIV Expression to Nearest Enhancer") + 
   xlab("Log10 Distance to Enhancer") + 
   ylab("HIV Expression") + 
-  scale_x_continuous(limits=c(2.5, 7)) +
+  scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.5, y = 3, label = "Intergenic Same r = -0.13 (p-value = 0.14)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Intergenic Same r = -0.13 (p-value = 0.14)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -102,15 +102,15 @@ dev.off()
 
 pdf("BHIVE_expression_scatterplot_closestEnhancer_group2.pdf")
 ggplot(g2r, aes(x=logDis, y=exp, size=mapq, color=group)) + 
-  scale_color_manual(values=c("#CC79A7")) +
+  scale_color_manual(values=c("#ff0000")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("Correlation of HIV Expression to Nearest Enhancer") + 
   xlab("Log10 Distance to Enhancer") + 
   ylab("HIV Expression") + 
-  scale_x_continuous(limits=c(2.5, 7)) +
+  scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.5, y = 3, label = "Intergenic Convergent r = -0.05 (p-value = 0.69)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Intergenic Convergent r = -0.05 (p-value = 0.69)", size=3, color = "#ff0000", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -127,9 +127,9 @@ ggplot(g3r, aes(x=logDis, y=exp, size=mapq, color=group)) +
   ggtitle("Correlation of HIV Expression to Nearest Enhancer") + 
   xlab("Log10 Distance to Enhancer") + 
   ylab("HIV Expression") + 
-  scale_x_continuous(limits=c(2.5, 7)) +
+  scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.5, y = 3, label = "Intergenic Divergent r = -0.12 (p-value = 0.32)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Intergenic Divergent r = -0.12 (p-value = 0.32)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -146,9 +146,9 @@ ggplot(g4r, aes(x=logDis, y=exp, size=mapq, color=group)) +
   ggtitle("Correlation of HIV Expression to Nearest Enhancer") + 
   xlab("Log10 Distance to Enhancer") + 
   ylab("HIV Expression") + 
-  scale_x_continuous(limits=c(2.5, 7)) +
+  scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.5, y = 3, label = "Intragenic Same r = -0.01 (p-value = 0.80)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Intragenic Same r = -0.01 (p-value = 0.80)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -159,15 +159,15 @@ dev.off()
 
 pdf("BHIVE_expression_scatterplot_closestEnhancer_group5.pdf")
 ggplot(g5r, aes(x=logDis, y=exp, size=mapq, color=group)) + 
-  scale_color_manual(values=c("#F0E442")) +
+  scale_color_manual(values=c("#808080")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("Correlation of HIV Expression to Nearest Enhancer") + 
   xlab("Log10 Distance to Enhancer") + 
   ylab("HIV Expression") + 
-  scale_x_continuous(limits=c(2.5, 7)) +
+  scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.5, y = 3, label = "Intragenic Convergent r = -0.03 (p-value = 0.38)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Intragenic Convergent r = -0.03 (p-value = 0.38)", size=3, color = "#808080", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -184,9 +184,9 @@ ggplot(g6r, aes(x=logDis, y=exp, size=mapq, color=group)) +
   ggtitle("Correlation of HIV Expression to Nearest Enhancer") + 
   xlab("Log10 Distance to Enhancer") + 
   ylab("HIV Expression") + 
-  scale_x_continuous(limits=c(2.5, 7)) +
+  scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 2.5, y = 3, label = "Overlaps 2 Genes r = 0.14 (p-value = 0.27)", size=3, color = "#9933CC", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Overlaps 2 Genes r = 0.14 (p-value = 0.27)", size=3, color = "#9933CC", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),

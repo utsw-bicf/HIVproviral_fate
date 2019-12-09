@@ -77,10 +77,10 @@ df <- rbind(g1r, g2r, g3r, g4r, g5r,g6r)
 
 ### Make scatter plot
 ### add pearson correlation manually
-### "#CC79A7", "#D55E00", "#0072B2", "#F0E442", "#009E73"
+### "#ff0000", "#D55E00", "#0072B2", "#808080", "#009E73"
 pdf("BHIVE_expression_scatterplot_closestSuperEnhancer_all.pdf")
 ggplot(df, aes(x=logDis, y=exp, size=mapq, color=group)) + 
-  scale_color_manual(values=c("#CC79A7", "#D55E00", "#0072B2", "#F0E442", "#009E73","#9933CC")) +
+  scale_color_manual(values=c("#ff0000", "#D55E00", "#0072B2", "#808080", "#009E73","#9933CC")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("HIV Expression to Nearest SuperEnhancer") + 
@@ -89,10 +89,10 @@ ggplot(df, aes(x=logDis, y=exp, size=mapq, color=group)) +
   scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
   annotate("text", x = 0, y = 3, label = "Intergenic Same r = -0.02 (p-value = 0.87)", size=3, color = "#0072B2", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 0, y = 2.85, label = "Intergenic Convergent r = -0.08 (p-value = 0.51)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 2.85, label = "Intergenic Convergent r = -0.08 (p-value = 0.51)", size=3, color = "#ff0000", hjust=0) + ###This line needs to be manually changed
   annotate("text", x = 0, y = 2.70, label = "Intergenic Divergent r = -0.11 (p-value = 0.36)", size=3, color = "#D55E00", hjust=0) + ###This line needs to be manually changed
   annotate("text", x = 0, y = 2.55, label = "Intragenic Same r = -0.09 (p-value = 0.02)", size=3, color = "#009E73", hjust=0) + ###This line needs to be manually changed
-  annotate("text", x = 0, y = 2.40, label = "Intragenic Convergent r = -0.12 (p-value = 0.002)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 2.40, label = "Intragenic Convergent r = -0.12 (p-value = 0.002)", size=3, color = "#808080", hjust=0) + ###This line needs to be manually changed
   annotate("text", x = 0, y = 2.25, label = "Overlaps 2 Genes r = -0.05 (p-value = 0.73)", size=3, color = "#9933CC", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
@@ -125,7 +125,7 @@ dev.off()
 
 pdf("BHIVE_expression_scatterplot_closestSuperEnhancer_group2.pdf")
 ggplot(g2r, aes(x=logDis, y=exp, size=mapq, color=group)) + 
-  scale_color_manual(values=c("#CC79A7")) +
+  scale_color_manual(values=c("#ff0000")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("HIV Expression to Nearest SuperEnhancer") + 
@@ -133,7 +133,7 @@ ggplot(g2r, aes(x=logDis, y=exp, size=mapq, color=group)) +
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 0, y = 3, label = "Intergenic Convergent r = -0.08 (p-value = 0.51)", size=3, color = "#CC79A7", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Intergenic Convergent r = -0.08 (p-value = 0.51)", size=3, color = "#ff0000", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
@@ -182,7 +182,7 @@ dev.off()
 
 pdf("BHIVE_expression_scatterplot_closestSuperEnhancer_group5.pdf")
 ggplot(g5r, aes(x=logDis, y=exp, size=mapq, color=group)) + 
-  scale_color_manual(values=c("#F0E442")) +
+  scale_color_manual(values=c("#808080")) +
   geom_point(alpha=1/4) + 
   geom_smooth(method=lm, se=FALSE) +
   ggtitle("HIV Expression to Nearest SuperEnhancer") + 
@@ -190,7 +190,7 @@ ggplot(g5r, aes(x=logDis, y=exp, size=mapq, color=group)) +
   ylab("HIV Expression") + 
   scale_x_continuous(limits=c(0, 7.5)) +
   scale_y_continuous(limits=c(-3.5, 3)) +
-  annotate("text", x = 0, y = 3, label = "Intragenic Convergent r = -0.12 (p-value = 0.002)", size=3, color = "#F0E442", hjust=0) + ###This line needs to be manually changed
+  annotate("text", x = 0, y = 3, label = "Intragenic Convergent r = -0.12 (p-value = 0.002)", size=3, color = "#808080", hjust=0) + ###This line needs to be manually changed
   theme(plot.title = element_text(size=22, hjust = 0.5), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),

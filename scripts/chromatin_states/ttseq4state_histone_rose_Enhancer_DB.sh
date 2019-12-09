@@ -472,3 +472,38 @@ plotHeatmap -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/en
   --regionsLabel SuperEnhancers \
   -out /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/DNase_SuperEnhancers.pdf
 
+
+########################################################################
+########################################################################
+########################################################################
+########################################################################
+########################################################################
+########## Make heatmaps with homer instead of deeptools
+########## Note: Homer was installed locally on /project/BICF/BICF_Core/s185797/homer; and in bashrc
+mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/homer_heatmaps
+
+##### Make bw to bedgraph
+module load UCSC_userApps/v317 
+bigWigToBedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/homer_heatmaps/DNAse-seq.bedGraph
+
+##### DNase-seq; in Homer; SuperEnhancers
+annotatePeaks.pl \
+  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/zv_SuperEnhancer.bed \
+  hg38 \
+  -size 20000 \
+  -hist 25 \
+  -ghist \
+  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/homer_heatmaps/DNAse-seq.bedGraph \
+  >DNase_output_homer_SE.txt
+
+annotatePeaks.pl \
+  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/zr_Enhancer.bed \
+  hg38 \
+  -size 2000 \
+  -hist 25 \
+  -ghist \
+  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/homer_heatmaps/DNAse-seq.bedGraph \
+  >DNase_output_homer_TE.txt
+
+##### Run Rscript to make heatmap
+Rscript
