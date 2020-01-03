@@ -51,6 +51,28 @@ ggplot(df2, aes(x=HMM, y=expr)) +
 dev.off()
 
 
+### Do the same but with a jitter box-plot
+pdf("BHIVE_exp_by_chromstates_histone7_Ernstorder_boxplot.pdf")
+ggplot(df2, aes(x=HMM, y=expr, fill=HMM)) + 
+  geom_boxplot() +
+#  geom_jitter(position=position_jitter(width=.3, height=0), size= 0.2) +
+  ggtitle("chromHMM state of HIV expression") + 
+  ylab("HIV Expression") +
+  xlab("Chromatin state") +
+  scale_fill_manual(values=c("#FF0000", "#FF4500", "#FF4545", "#008000", "#006400",
+                             "#C2E105", "#FFFF00", "#66CDAA", "#8A91D0", "#CD5C5C",
+                             "#E9967A", "#BDB76B", "#808080", "#C0C0C0", "#FFFFFF")) +
+  scale_x_discrete(labels = wrap_format(10)) +
+  scale_y_continuous(limits=c(-4, 4)) +
+  theme(plot.title = element_text(size=22, hjust = 0.5), 
+        axis.title.x=element_blank(),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        legend.position="none")
+dev.off()
+
 
 ######################################################################
 ######################################################################
@@ -95,8 +117,10 @@ sumStats <- group_by(rEL, HMM) %>%
   summarise(
     count = n(),
     mean = mean(expr, na.rm = TRUE),
+    median = median(expr, na.rm = TRUE),
     sd = sd(expr, na.rm = TRUE)
   )
+write.table(sumStats, file=("Summary_stats.txt"), quote = F, row.names = F, col.names = T, sep = "\t")
 
 # Compute the analysis of variance
 res.aov <- aov(expr ~ HMM, data = rEL)
@@ -108,7 +132,7 @@ summary(res.aov)
 ### Need to do a two-way to determine which group
 
 # Tukey multiple pairwise-comparisons
-TukeyHSD(res.aov)
+TukeyHSD(res.aov, which = "")
 
 # Multiple comparisons using multcomp package
 library(multcomp)
@@ -142,4 +166,20 @@ shapiro.test(x = aov_residuals )
 ### !!! This test was significant, cannot assume normality 
 kruskal.test(expr ~ HMM, data = rEL)
 
-pairwise.wilcox.test(rEL$expr, rEL$HMM, p.adjust.method = "BH")
+test <- pairwise.wilcox.test(rEL$expr, rEL$HMM, p.adjust.method = "BH")
+test$p.value[is.na(test$p.value)] <- 1
+
+library("gplots")
+b <- c(seq(0, 0.0499, by= 0.001), seq(0.05,0.98, by=0.02), seq(0.99,1,by=0.001))
+d <- colorRampPalette(c("darkgreen","grey", "white"))
+
+heatmap.2(as.matrix(test$p.value), 
+          col=d,
+          breaks=b,
+          dendrogram = 'none',
+          density.info="none",  
+          trace="none",
+          Rowv=FALSE,
+          Colv=FALSE,
+          symm=F,symkey=F,symbreaks=F, scale="none",
+          layout = "lmat")
