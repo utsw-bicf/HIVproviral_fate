@@ -106,6 +106,8 @@ bedtools intersect -v -a <(sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Pr
 cat /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/mkdb/jurkat_AllTranscribed_inFandR_NotProteinCoding_NotTranscribedAnnotated.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/mkdb/jurkat_notAll_has_FandR_NotProteinCoding_NotTranscribedAnnotated.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/mkdb/jurkat_InOnly1_AllFandR_NotProteinCoding_NotTranscribedAnnotated.bed | awk '{OFS="\t"} {print $1, "ttseq_"NR, ".", $2, $3, ".", ".", ".", "ttseq_"NR}' >/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/mkdb/all_ttseq_possible_enhancers.gtf
 
 # H3K27ac
+mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K27ac
+
 python /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/rose/rose/ROSE_main.py \
   -g HG18 \
   -i /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/mkdb/all_ttseq_possible_enhancers.gtf \
@@ -115,11 +117,8 @@ python /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_d
   -s 12500 \
   -t 2500
 
-
-
 ### H3K4me3
 mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K4me3
-
 
 python /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/rose/rose/ROSE_main.py \
   -g HG18 \
@@ -129,8 +128,6 @@ python /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_d
   -o /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K4me3 \
   -s 12500 \
   -t 2500
-
-
 
 
 ### H3K4me1
@@ -164,39 +161,6 @@ awk '{OFS="\t"} NR>5 {if ($3 == "gene") {print $1, $4, $5, $10, $7, $8}}' /proje
 
 bedtools intersect -v -a <(sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ttseq_vs_rnaseq/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed) -b <(sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ttseq_vs_rnaseq/gencode_filter.bed) >/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ttseq_vs_rnaseq/ttseq_filteredSE.bed
 
-
-### upset plots of superEnhancers
-intervene upset -i /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K27ac/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K4me3/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K4me1/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ttseq_vs_rnaseq/ttseq_filteredSE.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZW_dbSuper.bed \
-  --type genomic \
-  --names H3K27ac,H3K4me3,H3K4me1,TTseq,dbSuper \
-  --project SuperEnhancers_upset
-
-module load R
-Rscript /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/Intervene_results/SuperEnhancers_upset_upset.R
-
-
-### Run overlap plots of SuperEnhancers
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K27ac/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZP_H3K27ac_SE.bed
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K4me3/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZQ_H3K4me3_SE.bed
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K4me1/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZS_H3K4me1_SE.bed
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ttseq_vs_rnaseq/ttseq_filteredSE.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZT_TTseq_SE.bed
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/dbSuper/dbSuper_jurkat_hg19_LO_hg38.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZU_dbSuper.bed
-
-### Merge SE DataBase and also remove putative lincs from lncipedia
-cat /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZP_H3K27ac_SE.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZQ_H3K4me3_SE.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZS_H3K4me1_SE.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZT_TTseq_SE.bed | sort -k 1,1 -k 2,2n | bedtools merge -i stdin >/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZV_SuperEnhancers.bed
-
-bedtools intersect -v -a <(sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZV_SuperEnhancers.bed) -b <(sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/lncipedia/lncipedia_5_2_hg38_all.bed) >/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZW_SuperEnhancersNotLinc.bed
-
-bedtools intersect -wa -a <(sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZV_SuperEnhancers.bed) -b <(sort -k 1,1 -k 2,2n /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/lncipedia/lncipedia_5_2_hg38_all.bed) | sort -k 1,1 -k 2,2n | uniq >/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZX_SuperEnhancersPosLinc.bed
-
-
-unset DISPLAY
-java -Djava.awt.headless=true -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/labelmappingfile.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/jurkat_15_segments_reorder.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/SE
-
 ######################################################################
 ######################################################################
 ######################################################################
@@ -221,47 +185,13 @@ bedtools intersect -wa -a /project/BICF/BICF_Core/shared/Projects/Dorso/chromati
 # both f and rev
 bedtools intersect -wa -a /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/ttseq_possible_enhancers_minusSuperEnhancers.bed -b /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/mkdb/jurkat_4_ForwardTranscribed.bed | bedtools intersect -wa -a stdin -b /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/mkdb/jurkat_4_ReverseTranscribed.bed | sort -k 1,1 -k 2,2n | bedtools merge -i stdin | uniq >/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/TTseq_enhancers.bed
 
-
-########## Make upset plot of all possible enhancers vs 3 histones
-### upset plots of superEnhancers
-intervene upset -i /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K27ac_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K4me3_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K4me1_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/TTseq_enhancers.bed \
-  --type genomic \
-  --names H3K27ac,H3K4me3,H3K4me1,TTseq \
-  --project Enhancers_upset
-
-module load R
-Rscript /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/Intervene_results/Enhancers_upset_upset.R
-
-# Copy to refseq annotations
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K27ac_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZP_H3K27ac_enhancers.bed
-
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K4me3_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZQ_H3K4me3_enhancers.bed
-
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K4me1_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZS_H3K4me1_enhancers.bed
-
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/TTseq_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZT_TTseq_enhancers.bed
-
-cat /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K27ac_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K4me3_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K4me1_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/TTseq_enhancers.bed | sort -k 1,1 -k 2,2n | bedtools merge -i stdin >/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/ZU_enhancers.bed
-
-
-########## Make Overlap plots
-unset DISPLAY
-java -Djava.awt.headless=true -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/labelmappingfile.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/jurkat_15_segments_reorder.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers
-
-
-
-
 ######################################################################
 ######################################################################
 ######################################################################
 ######################################################################
 ######################################################################
 ###################################################################### ### Make Final Datasets
-########## chromHMM and metagene plots
+########## chromHMM and metagene plots; This is overlapping the 15 state chromHMM with the enhancer databases created
 cat /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K27ac_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K4me3_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/H3K4me1_enhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/enhancers/TTseq_enhancers.bed | sort -k 1,1 -k 2,2n | bedtools merge -i stdin >/project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/zr_enhancers.bed
 
 cat /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K27ac/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K4me3/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/H3K4me1/all_ttseq_possible_enhancers_Gateway_SuperEnhancers.bed /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ttseq_vs_rnaseq/ttseq_filteredSE.bed | sort -k 1,1 -k 2,2n | bedtools merge -i stdin > /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/zv_SuperEnhancer.bed
@@ -472,38 +402,3 @@ plotHeatmap -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/en
   --regionsLabel SuperEnhancers \
   -out /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/DNase_SuperEnhancers.pdf
 
-
-########################################################################
-########################################################################
-########################################################################
-########################################################################
-########################################################################
-########## Make heatmaps with homer instead of deeptools
-########## Note: Homer was installed locally on /project/BICF/BICF_Core/s185797/homer; and in bashrc
-mkdir /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/homer_heatmaps
-
-##### Make bw to bedgraph
-module load UCSC_userApps/v317 
-bigWigToBedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/callPeaksMACS/DNAse-seq_ENCODE_GSM736501_pooled.fc_signal.bw /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/homer_heatmaps/DNAse-seq.bedGraph
-
-##### DNase-seq; in Homer; SuperEnhancers
-annotatePeaks.pl \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/zv_SuperEnhancer.bed \
-  hg38 \
-  -size 20000 \
-  -hist 25 \
-  -ghist \
-  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/homer_heatmaps/DNAse-seq.bedGraph \
-  >DNase_output_homer_SE.txt
-
-annotatePeaks.pl \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/refseq_annotations/zr_Enhancer.bed \
-  hg38 \
-  -size 2000 \
-  -hist 25 \
-  -ghist \
-  -bedGraph /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/enhancer_database/four_state_chromHMM_TTseq/ttseq_rose_enhancers/ppdb/heatmaps/homer_heatmaps/DNAse-seq.bedGraph \
-  >DNase_output_homer_TE.txt
-
-##### Run Rscript to make heatmap
-Rscript
