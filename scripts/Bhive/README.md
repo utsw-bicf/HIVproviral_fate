@@ -23,8 +23,3 @@ BHIVE_expression_by_group_scatterplots_closestTSS.R
 
 ### Figures 4B - 4F
 BHIVE_expression_by_group_scatterplots_geneexpression.R
-
-BHIVE_expression_by_group_closest_enhancers.sh
-BHIVE_expression_by_group_scatterplots_closestEnhancers.R
-BHIVE_expression_by_group_scatterplots_closestSuperEnhancers.R
-
