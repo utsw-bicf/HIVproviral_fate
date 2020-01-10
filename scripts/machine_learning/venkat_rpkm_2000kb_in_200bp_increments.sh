@@ -23,44 +23,44 @@ done
 ### Make csv of input bam files
 ### Merge bam files
 ### H3K27ac
-#samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K27ac_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR2043614.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR1603650.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR1603654.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/GSM1603211.filt.nodup.bam
-#samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K27ac_consensus.bam
+samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K27ac_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR2043614.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR1603650.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR1603654.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/GSM1603211.filt.nodup.bam
+samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K27ac_consensus.bam
 
 ### H3K36me3
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603209.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K36me3_single.bam
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603209.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K36me3_single.bam.bai
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603209.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K36me3_single.bam
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603209.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K36me3_single.bam.bai
 
 ### H3K79me3
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603215.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K79me3_single.bam
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603215.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K79me3_single.bam.bai
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603215.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K79me3_single.bam
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603215.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K79me3_single.bam.bai
 
 ### H3K9me3
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603227.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K9me3_single.bam
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603227.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K9me3_single.bam.bai
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603227.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K9me3_single.bam
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603227.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K9me3_single.bam.bai
 
 ### H3K4me1
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603225.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K4me1_single.bam
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603225.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K4me1_single.bam.bai
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603225.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K4me1_single.bam
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/GSM1603225.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K4me1_single.bam.bai
 
 ### H3K4me3
-#samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K4me3_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR577482.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR577483.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/GSM1603213.filt.nodup.bam
-#samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K4me3_consensus.bam
+samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K4me3_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR577482.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/SRR577483.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/filterReads/GSM1603213.filt.nodup.bam
+samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/H3K4me3_consensus.bam
 
 ### RNAseq
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/1D_expression_vs_chip/RNAseq.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/RNAseq_consensus.bam
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/1D_expression_vs_chip/RNAseq.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/RNAseq_consensus.bam.bai
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/1D_expression_vs_chip/RNAseq.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/RNAseq_consensus.bam
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/1D_expression_vs_chip/RNAseq.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/RNAseq_consensus.bam.bai
 
 ### MNase-seq
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_MNase/workflow/output_MNase/filterReads/Jkt106_MNase_Seq_20170218_1_val_1Jkt106_MNase_Seq_20170218_2_val_2.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/MNase_single.bam
-#ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_MNase/workflow/output_MNase/filterReads/Jkt106_MNase_Seq_20170218_1_val_1Jkt106_MNase_Seq_20170218_2_val_2.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/MNase_single.bam.bai
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_MNase/workflow/output_MNase/filterReads/Jkt106_MNase_Seq_20170218_1_val_1Jkt106_MNase_Seq_20170218_2_val_2.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/MNase_single.bam
+ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_MNase/workflow/output_MNase/filterReads/Jkt106_MNase_Seq_20170218_1_val_1Jkt106_MNase_Seq_20170218_2_val_2.filt.nodup.bam.bai /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/MNase_single.bam.bai
 
 ### DNase-seq
-#samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/DNase_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/filterReads/ENCFF001DPF.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/filterReads/ENCFF001DPG.filt.nodup.bam
-#samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/DNase_consensus.bam
+samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/DNase_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/filterReads/ENCFF001DPF.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Accessibility/atacseq_analysis_DNase/workflow/output/filterReads/ENCFF001DPG.filt.nodup.bam
+samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/DNase_consensus.bam
 
 ### tt-Seq
-#samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Expression/rnaseq/workflow/output_TT/Ttseq_CRAMER_GSM2260188.dedup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Expression/rnaseq/workflow/output_TT/Ttseq_CRAMER_GSM2260187.dedup.bam
-#samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam
+samtools merge /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Expression/rnaseq/workflow/output_TT/Ttseq_CRAMER_GSM2260188.dedup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/Expression/rnaseq/workflow/output_TT/Ttseq_CRAMER_GSM2260187.dedup.bam
+samtools index /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/TTseq_consensus.bam
 
 ### H3K27me3
 ln -s /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/filterReads/SRR647929.filt.nodup.bam /project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/input_files/H3K27me3_single.bam

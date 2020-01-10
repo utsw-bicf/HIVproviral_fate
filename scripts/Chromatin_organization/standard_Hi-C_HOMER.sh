@@ -28,7 +28,7 @@ cat /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/raw_dat
 ## lib2
 cat /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/raw_data/SRR8244646_1.fastq.gz \
 /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/raw_data/SRR8388751_1.fastq.gz \
-#project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/raw_data/SRR8388752_1.fastq.gz \
+/project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/raw_data/SRR8388752_1.fastq.gz \
 /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/raw_data/SRR8388753_1.fastq.gz \
 /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/raw_data/SRR8388754_1.fastq.gz \
 /project/BICF/BICF_Core/shared/Projects/Dorso/Chromatin_organization/raw_data/SRR8388755_1.fastq.gz \
@@ -206,9 +206,5 @@ findHiCInteractionsByChr.pl /project/BICF/BICF_Core/shared/Projects/Dorso/Chroma
 
 ### Annotate interactions
 annotateInteractions.pl lib1_chrInteractions.txt hg38 Annotated_interations_lib1/ -pvalue 0.05 
-#annotateInteractions.pl lib2_chrInteractions.txt hg38 Annotated_interations_lib2/ -pvalue 0.05 
+annotateInteractions.pl lib2_chrInteractions.txt hg38 Annotated_interations_lib2/ -pvalue 0.05 
 
-### Find interactions with peaks for cytoscape; Doesn't work!!
-annotateInteractions.pl lib1_chrInteractions.txt hg38 lib1_annotated_w_peaks/ -p /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K4me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K27ac.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603225_GFP_H3K4me1.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603209_GFP_H3K36me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603215_GFP_H3K79me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603227_GFP_H3K9me3.replicated.narrowPeak
-
-annotateInteractions.pl lib2_chrInteractions.txt hg38 lib2_annotated_w_peaks/ -p /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K4me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_consensus/consensusPeaks/H3K27ac.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603225_GFP_H3K4me1.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603209_GFP_H3K36me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603215_GFP_H3K79me3.replicated.narrowPeak /project/BICF/BICF_Core/shared/Projects/Dorso/Epigenetics/chipseq_analysis/workflow/output_011519/consensusPeaks/GSM1603227_GFP_H3K9me3.replicated.narrowPeak
