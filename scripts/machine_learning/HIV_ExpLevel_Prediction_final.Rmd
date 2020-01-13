@@ -1,0 +1,647 @@
+---
+title: "Machine Learning for HIV expression level prediction"
+output: 
+  html_document: default
+---
+by Jeon Lee on October 1, 2019
+
+
+$~$
+
+## CASE I: numerical ChrommHMM + numerical Lamin
+#### Import and preprocess the data 
+```{r message=FALSE, warning=FALSE}
+library(knitr)
+library(kableExtra)
+library(dplyr)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+
+
+setwd("~/R/IvanDorso_lab")
+inputData <- read.table("HIVexp_His7Plus4_chrom_lamin_damID_4ML.tsv", sep="\t", header = TRUE) #damID data added
+
+newData <- inputData[, c(6:285)]
+newID <- paste(inputData$chr, inputData$start, sep = '_')
+
+# remove duplicate rows
+idx_dup <- which(duplicated(newID))
+newData <- newData[-idx_dup,]
+rownames(newData) <- newID[-idx_dup]
+
+# log10 transform for damID data columns
+newData[,c(261:280)] <- data.frame(lapply(newData[,c(261:280)], function(x) {log(x+1e-3,10)}))
+
+# replace '-' sign with 'neg' for column names 
+colnames(newData) <- gsub("\\.", "neg", colnames(newData))
+
+# convert ChromHMM and Lamin values into numeric values using lookup tables
+tb_ChromHMM <- data.frame(Status=c("U1","U4","U3","U6","U2","U7","U5","U10","U8","U11","U12","U14","U13","U9", "U15"), 
+                          Score=c(14:0)/14)
+tb_Lamin <- data.frame(Protein=c("A1","A2","B1","B2","B3","B4"), 
+                       Score=(c(2,2,-2,-1,-1,0)+2)/4)
+
+newData[,c(1:20)]  <- data.frame(lapply(newData[,c(1:20)],
+                                        function(x) {tb_ChromHMM[match(x, tb_ChromHMM$Status), "Score"]}))
+
+newData[,c(21:40)] <- data.frame(lapply(newData[,c(21:40)], function(x) {tb_Lamin[match(x, tb_Lamin$Protein), "Score"]}))
+
+# check data dimension
+n_obs <- dim(newData)[1]
+n_fea <- dim(newData)[2]
+
+kable(head(newData,10)) %>% kable_styling("striped", full_width = F) %>% scroll_box(width = "100%")
+```
+
+$~$
+
+#### HIV expression level histogram 
+```{r message=FALSE, warning=FALSE}
+newData$HIVexp <- scale(inputData$HIVexp[-idx_dup])
+ggplot(newData, aes(x=HIVexp)) + geom_histogram(color="darkblue", fill="lightblue") + labs(title="Histogram of scaled HIV expression levels")
+```
+
+$~$
+
+#### HIV expression stratification into Low, Mid and High 
+```{r message=FALSE, warning=FALSE}
+newData <- newData %>% mutate(ExpLevel = case_when(HIVexp >= 0.5 ~ 1, HIVexp >= -0.5 ~ 0.5, TRUE ~ 0))
+kable(data.frame(table(newData$ExpLevel))) %>% kable_styling("striped", full_width = F)
+
+#==== Create Training Data
+newData_High <- newData[which(newData$ExpLevel == 1), ]
+newData_Mid <- newData[which(newData$ExpLevel == 0.5), ]
+newData_Low <- newData[which(newData$ExpLevel == 0), ]
+```
+
+$~$
+
+#### Train and test data preparation only for High and Low expressions
+```{r message=FALSE, warning=FALSE}
+# set up data split ratio = 0.75 (75% of data for traning; 25% of data for test)
+set.seed(1234)
+splitRatio <- 0.75
+
+#==== Create Training Data
+High_train_index <- sample(1:nrow(newData_High), splitRatio*nrow(newData_High))
+Mid_train_index <- sample(1:nrow(newData_Mid), splitRatio*nrow(newData_Mid))
+Low_train_index <- sample(1:nrow(newData_Low), splitRatio*nrow(newData_Low))
+
+train_High <- newData_High[High_train_index, ]  
+train_Mid <- newData_Mid[Mid_train_index, ]
+train_Low <- newData_Low[Low_train_index, ]
+
+train_Data <- rbind(train_High, train_Low) #train_Data <- rbind(train_High, train_Mid, train_Low)
+
+#==== Create Test Data
+test_High <- newData_High[-High_train_index, ]
+test_Mid <- newData_Mid[-Mid_train_index, ]
+test_Low <- newData_Low[-Low_train_index, ]
+
+test_Data <- rbind(test_High, test_Low) #test_Data <- rbind(test_High, test_Mid, test_Low)
+```
+
+$~$
+
+#### Information Value(IV) calculation 
+```{r message=FALSE, warning=FALSE}
+library(smbinning)
+# segregate continuous and factor variables
+factor_vars <- vector()
+continuous_vars <- setdiff(colnames(newData), c("HIVexp", "ExpLevel"))
+iv_df <- data.frame(VARS=c(factor_vars, continuous_vars), IV=numeric(n_fea))  # init for IV results
+
+# compute IV for categorical vars
+for(factor_var in factor_vars){
+  smb <- smbinning.factor(train_Data, y="ExpLevel", x=factor_var)  # WOE table
+  if(class(smb) != "character"){ # check if some error occured
+    iv_df[iv_df$VARS == factor_var, "IV"] <- smb$iv
+  }
+}
+  
+# compute IV for continuous vars
+for(continuous_var in continuous_vars){
+  smb <- smbinning(train_Data, y="ExpLevel", x=continuous_var)  # WOE table
+  if(class(smb) != "character"){  # any error while calculating scores.
+    iv_df[iv_df$VARS == continuous_var, "IV"] <- smb$iv
+  }
+}
+  
+iv_df <- iv_df[order(-iv_df$IV), ]  # sort
+iv_df <- within(iv_df, VARS <- factor(VARS, levels=iv_df$VARS))
+
+ggplot(data=iv_df, aes(x=VARS,y=IV)) + 
+  geom_bar(position="dodge",stat="identity") + 
+  coord_flip() + theme(axis.text.y=element_blank()) +
+  ggtitle("Information Values") 
+
+kable(iv_df) %>% kable_styling("striped", full=FALSE) %>%  scroll_box(height = "400px")
+```
+
+$~$
+
+#### Filter out variables with low IVs 
+```{r message=FALSE, warning=FALSE}
+var_notImp <- iv_df$VARS[iv_df$IV<=0.2] # variables not important by Optimal Binning
+
+train_Data2 <- train_Data[,!names(train_Data) %in% var_notImp]
+test_Data2 <- test_Data[,!names(train_Data) %in% var_notImp]
+```
+
+$~$
+
+#### Build a Logit Model
+```{r message=FALSE, warning=FALSE}
+pModel <- glm(ExpLevel ~ . -HIVexp, data=train_Data2, family=binomial(link="logit"))
+#summary(pModel)
+kable(data.frame(pModel$coefficients)) %>% kable_styling("striped", full_width = F) %>%  scroll_box(height = "400px")
+```
+
+$~$
+
+#### HIV expression level prediction for the test data 
+```{r message=FALSE, warning=FALSE}
+predicted <- plogis(predict(pModel, test_Data2))  #or# predicted <- predict(pModel, testData, type="response")
+
+# Decide on optimal prediction probability cutoff for the model
+library(InformationValue)
+optCutOff <- optimalCutoff(test_Data2$ExpLevel, predicted)[1] 
+optCutOff
+
+# Misclassification Error
+misClassError(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+
+# ROC
+plotROC(test_Data2$ExpLevel, predicted)
+
+# Concordance
+kable(data.frame(Concordance(test_Data2$ExpLevel, predicted))) %>% kable_styling("striped", full_width = F)
+
+# Sensitivity and specificity
+Sensitivity <- InformationValue::sensitivity(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+Specificity <- InformationValue::specificity(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+kable(data.frame(cbind(Sensitivity, Specificity))) %>% kable_styling("striped", full_width = F)
+
+# Confusion Matrix
+df_CM <- data.frame(InformationValue::confusionMatrix(test_Data2$ExpLevel, predicted, threshold = optCutOff))
+colnames(df_CM) <- c("Low", "High")
+kable(df_CM) %>% kable_styling("striped", full_width = F)
+```
+
+$~$
+
+#### Compare predicted HIV expression values between Low and High groups
+```{r message=FALSE, warning=FALSE}
+library(ggpubr)
+df <- data.frame(cbind(test_Data2$ExpLevel, test_Data2$HIVexp, predicted))
+colnames(df) <- c("ExpLevel", "ExpValue", "Predicted")
+df$ExpLevel <- ifelse(df$ExpLevel==0, "Low", "High")
+df$ExpLevel <- as.factor(df$ExpLevel)
+
+ggplot(df, aes(x=ExpLevel, y=Predicted, fill=ExpLevel)) + 
+  geom_boxplot() + geom_jitter(shape=16, position=position_jitter(0.2)) +
+  stat_compare_means(label.x = 1.3, label.y = 1.1)
+```
+
+
+$~$
+
+#### (Optional) Check predicted HIV expression values for Mid-group test data
+```{r message=FALSE, warning=FALSE}
+predicted_Mid <- plogis(predict(pModel, test_Mid))  #or# predicted <- predict(pModel, testData, type="response")
+df2 <- data.frame(rbind(cbind(test_Data2$ExpLevel, test_Data2$HIVexp, predicted), cbind(test_Mid$ExpLevel, test_Mid$HIVexp, predicted_Mid)))
+colnames(df2) <- c("ExpLevel", "ExpValue", "Predicted")
+df2 <- df2 %>% mutate(ExpLevel = case_when(ExpLevel == 1 ~ "High", ExpLevel == 0 ~ "Low", TRUE ~ "Mid"))
+df2$ExpLevel <- factor(df2$ExpLevel, ordered = TRUE, levels = c("High", "Mid", "Low"))
+ggplot(df2, aes(x=ExpLevel, y=Predicted, fill=ExpLevel)) +
+  geom_boxplot() + geom_jitter(shape=16, position=position_jitter(0.2)) +
+  stat_compare_means(label.x = 1.3, label.y = 1.1) + scale_fill_manual(values=c("#F8766D", "#00BA38", "#619CFF"))
+```
+
+$~$
+
+
+## CASE II: numerical ChrommHMM + categorical Lamin
+#### Import and preprocess the data 
+```{r message=FALSE, warning=FALSE}
+library(knitr)
+library(kableExtra)
+library(dplyr)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+
+
+setwd("~/R/IvanDorso_lab")
+inputData <- read.table("HIVexp_His7Plus4_chrom_lamin_damID_4ML.tsv", sep="\t", header = TRUE) #damID data added
+
+newData <- inputData[, c(6:285)]
+newID <- paste(inputData$chr, inputData$start, sep = '_')
+
+# remove duplicate rows
+idx_dup <- which(duplicated(newID))
+newData <- newData[-idx_dup,]
+rownames(newData) <- newID[-idx_dup]
+
+# log10 transform for damID data columns
+newData[,c(261:280)] <- data.frame(lapply(newData[,c(261:280)], function(x) {log(x+1e-3,10)}))
+
+# replace '-' sign with 'neg' for column names 
+colnames(newData) <- gsub("\\.", "neg", colnames(newData))
+
+# convert ChromHMM and Lamin values into numeric values using lookup tables
+tb_ChromHMM <- data.frame(Status=c("U1","U4","U3","U6","U2","U7","U5","U10","U8","U11","U12","U14","U13","U9", "U15"), 
+                          Score=c(14:0)/14)
+tb_Lamin <- data.frame(Protein=c("A1","A2","B1","B2","B3","B4"), 
+                       Score=(c(2,2,-2,-1,-1,0)+2)/4)
+
+newData[,c(1:20)]  <- data.frame(lapply(newData[,c(1:20)],
+                                        function(x) {tb_ChromHMM[match(x, tb_ChromHMM$Status), "Score"]}))
+
+# check data dimension
+n_obs <- dim(newData)[1]
+n_fea <- dim(newData)[2]
+
+kable(head(newData,10)) %>% kable_styling("striped", full_width = F) %>% scroll_box(width = "100%")
+```
+
+$~$
+
+#### HIV expression level histogram 
+```{r message=FALSE, warning=FALSE}
+newData$HIVexp <- scale(inputData$HIVexp[-idx_dup])
+#ggplot(newData, aes(x=HIVexp)) + geom_histogram(color="darkblue", fill="lightblue") + labs(title="Histogram of scaled HIV expression levels")
+```
+
+$~$
+
+#### HIV expression stratification into Low, Mid and High 
+```{r message=FALSE, warning=FALSE}
+newData <- newData %>% mutate(ExpLevel = case_when(HIVexp >= 0.5 ~ 1, HIVexp >= -0.5 ~ 0.5, TRUE ~ 0))
+#table(newData$ExpLevel)
+
+#==== Create Training Data
+newData_High <- newData[which(newData$ExpLevel == 1), ]
+newData_Mid <- newData[which(newData$ExpLevel == 0.5), ]
+newData_Low <- newData[which(newData$ExpLevel == 0), ]
+```
+
+$~$
+
+#### Train and test data preparation only for High and Low expressions
+```{r message=FALSE, warning=FALSE}
+# set up data split ratio = 0.75 (75% of data for traning; 25% of data for test)
+set.seed(1234)
+splitRatio <- 0.75
+
+#==== Create Training Data
+High_train_index <- sample(1:nrow(newData_High), splitRatio*nrow(newData_High))
+Mid_train_index <- sample(1:nrow(newData_Mid), splitRatio*nrow(newData_Mid))
+Low_train_index <- sample(1:nrow(newData_Low), splitRatio*nrow(newData_Low))
+
+train_High <- newData_High[High_train_index, ]  
+train_Mid <- newData_Mid[Mid_train_index, ]
+train_Low <- newData_Low[Low_train_index, ]
+
+train_Data <- rbind(train_High, train_Low) #train_Data <- rbind(train_High, train_Mid, train_Low)
+
+#==== Create Test Data
+test_High <- newData_High[-High_train_index, ]
+test_Mid <- newData_Mid[-Mid_train_index, ]
+test_Low <- newData_Low[-Low_train_index, ]
+
+test_Data <- rbind(test_High, test_Low) #test_Data <- rbind(test_High, test_Mid, test_Low)
+```
+
+$~$
+
+#### Information Value(IV) calculation 
+```{r message=FALSE, warning=FALSE}
+library(smbinning)
+# segregate continuous and factor variables
+factor_vars <- colnames(newData)[21:40]
+continuous_vars <- setdiff(colnames(newData)[-c(21:40)], c("HIVexp", "ExpLevel"))
+iv_df <- data.frame(VARS=c(factor_vars, continuous_vars), IV=numeric(n_fea))  # init for IV results
+
+# compute IV for categorical vars
+for(factor_var in factor_vars){
+  smb <- smbinning.factor(train_Data, y="ExpLevel", x=factor_var)  # WOE table
+  if(class(smb) != "character"){ # check if some error occured
+    iv_df[iv_df$VARS == factor_var, "IV"] <- smb$iv
+  }
+}
+  
+# compute IV for continuous vars
+for(continuous_var in continuous_vars){
+  smb <- smbinning(train_Data, y="ExpLevel", x=continuous_var)  # WOE table
+  if(class(smb) != "character"){  # any error while calculating scores.
+    iv_df[iv_df$VARS == continuous_var, "IV"] <- smb$iv
+  }
+}
+  
+iv_df <- iv_df[order(-iv_df$IV), ]  # sort
+iv_df <- within(iv_df, VARS <- factor(VARS, levels=iv_df$VARS))
+
+ggplot(data=iv_df, aes(x=VARS,y=IV)) + 
+  geom_bar(position="dodge",stat="identity") + 
+  coord_flip() + theme(axis.text.y=element_blank()) +
+  ggtitle("Information Values") 
+
+kable(iv_df) %>% kable_styling("striped", full=FALSE) %>%  scroll_box(height = "400px")
+```
+
+$~$
+
+#### Filter out variables with low IVs 
+```{r message=FALSE, warning=FALSE}
+var_notImp <- iv_df$VARS[iv_df$IV<=0.2] # variables not important by Optimal Binning
+
+train_Data2 <- train_Data[,!names(train_Data) %in% var_notImp]
+test_Data2 <- test_Data[,!names(train_Data) %in% var_notImp]
+```
+
+$~$
+
+#### Build a Logit Model
+```{r message=FALSE, warning=FALSE}
+pModel <- glm(ExpLevel ~ . -HIVexp, data=train_Data2, family=binomial(link="logit"))
+#summary(pModel)
+kable(data.frame(pModel$coefficients)) %>% kable_styling("striped", full_width = F) %>%  scroll_box(height = "400px")
+```
+
+$~$
+
+#### HIV expression level prediction for the test data 
+```{r message=FALSE, warning=FALSE}
+predicted <- plogis(predict(pModel, test_Data2))  #or# predicted <- predict(pModel, testData, type="response")
+
+# Decide on optimal prediction probability cutoff for the model
+library(InformationValue)
+optCutOff <- optimalCutoff(test_Data2$ExpLevel, predicted)[1] 
+optCutOff
+
+# Misclassification Error
+misClassError(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+
+# ROC
+plotROC(test_Data2$ExpLevel, predicted)
+
+# Concordance
+kable(data.frame(Concordance(test_Data2$ExpLevel, predicted))) %>% kable_styling("striped", full_width = F)
+
+# Sensitivity and specificity
+Sensitivity <- InformationValue::sensitivity(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+Specificity <- InformationValue::specificity(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+kable(data.frame(cbind(Sensitivity, Specificity))) %>% kable_styling("striped", full_width = F)
+
+# Confusion Matrix
+df_CM <- data.frame(InformationValue::confusionMatrix(test_Data2$ExpLevel, predicted, threshold = optCutOff))
+colnames(df_CM) <- c("Low", "High")
+kable(df_CM) %>% kable_styling("striped", full_width = F)
+```
+
+$~$
+
+#### Compare predicted HIV expression values between Low and High groups
+```{r message=FALSE, warning=FALSE}
+library(ggpubr)
+df <- data.frame(cbind(test_Data2$ExpLevel, test_Data2$HIVexp, predicted))
+colnames(df) <- c("ExpLevel", "ExpValue", "Predicted")
+df$ExpLevel <- ifelse(df$ExpLevel==0, "Low", "High")
+df$ExpLevel <- as.factor(df$ExpLevel)
+
+ggplot(df, aes(x=ExpLevel, y=Predicted, fill=ExpLevel)) + 
+  geom_boxplot() + geom_jitter(shape=16, position=position_jitter(0.2)) +
+  stat_compare_means(label.x = 1.3, label.y = 1.1)
+```
+
+
+$~$
+
+#### (Optional) Check predicted HIV expression values for Mid-group test data
+```{r message=FALSE, warning=FALSE}
+predicted_Mid <- plogis(predict(pModel, test_Mid))  #or# predicted <- predict(pModel, testData, type="response")
+df2 <- data.frame(rbind(cbind(test_Data2$ExpLevel, test_Data2$HIVexp, predicted), cbind(test_Mid$ExpLevel, test_Mid$HIVexp, predicted_Mid)))
+colnames(df2) <- c("ExpLevel", "ExpValue", "Predicted")
+df2 <- df2 %>% mutate(ExpLevel = case_when(ExpLevel == 1 ~ "High", ExpLevel == 0 ~ "Low", TRUE ~ "Mid"))
+df2$ExpLevel <- factor(df2$ExpLevel, ordered = TRUE, levels = c("High", "Mid", "Low"))
+ggplot(df2, aes(x=ExpLevel, y=Predicted, fill=ExpLevel)) +
+  geom_boxplot() + geom_jitter(shape=16, position=position_jitter(0.2)) +
+  stat_compare_means(label.x = 1.3, label.y = 1.1) + scale_fill_manual(values=c("#F8766D", "#00BA38", "#619CFF"))
+```
+
+$~$
+
+
+## CASE III: previous numerical ChrommHMM + categorical Lamin
+#### Import and preprocess the data 
+```{r message=FALSE, warning=FALSE}
+library(knitr)
+library(kableExtra)
+library(dplyr)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+
+
+setwd("~/R/IvanDorso_lab")
+inputData <- read.table("HIVexp_His7Plus4_chrom_lamin_damID_4ML.tsv", sep="\t", header = TRUE) #damID data added
+
+newData <- inputData[, c(6:285)]
+newID <- paste(inputData$chr, inputData$start, sep = '_')
+
+# remove duplicate rows
+idx_dup <- which(duplicated(newID))
+newData <- newData[-idx_dup,]
+rownames(newData) <- newID[-idx_dup]
+
+# log10 transform for damID data columns
+newData[,c(261:280)] <- data.frame(lapply(newData[,c(261:280)], function(x) {log(x+1e-3,10)}))
+
+# replace '-' sign with 'neg' for column names 
+colnames(newData) <- gsub("\\.", "neg", colnames(newData))
+
+# convert ChromHMM and Lamin values into numeric values using lookup tables
+tb_ChromHMM <- data.frame(Status=c("U1","U4","U3","U6","U2","U7","U5","U10","U8","U11","U12","U14","U13","U9", "U15"), 
+                          Score=c(14:0)/14)
+tb_Lamin <- data.frame(Protein=c("A1","A2","B1","B2","B3","B4"), 
+                       Score=(c(2,2,-2,-1,-1,0)+2)/4)
+
+newData[,c(1:20)] <- data.frame(lapply(newData[,c(1:20)], function(x) {as.numeric(as.character(gsub("U", "", x)))}))
+
+# check data dimension
+n_obs <- dim(newData)[1]
+n_fea <- dim(newData)[2]
+
+kable(head(newData,10)) %>% kable_styling("striped", full_width = F) %>% scroll_box(width = "100%")
+```
+
+$~$
+
+#### HIV expression level histogram 
+```{r message=FALSE, warning=FALSE}
+newData$HIVexp <- scale(inputData$HIVexp[-idx_dup])
+#ggplot(newData, aes(x=HIVexp)) + geom_histogram(color="darkblue", fill="lightblue") + labs(title="Histogram of scaled HIV expression levels")
+```
+
+$~$
+
+#### HIV expression stratification into Low, Mid and High 
+```{r message=FALSE, warning=FALSE}
+newData <- newData %>% mutate(ExpLevel = case_when(HIVexp >= 0.5 ~ 1, HIVexp >= -0.5 ~ 0.5, TRUE ~ 0))
+#table(newData$ExpLevel)
+
+#==== Create Training Data
+newData_High <- newData[which(newData$ExpLevel == 1), ]
+newData_Mid <- newData[which(newData$ExpLevel == 0.5), ]
+newData_Low <- newData[which(newData$ExpLevel == 0), ]
+```
+
+$~$
+
+#### Train and test data preparation only for High and Low expressions
+```{r message=FALSE, warning=FALSE}
+# set up data split ratio = 0.75 (75% of data for traning; 25% of data for test)
+set.seed(1234)
+splitRatio <- 0.75
+
+#==== Create Training Data
+High_train_index <- sample(1:nrow(newData_High), splitRatio*nrow(newData_High))
+Mid_train_index <- sample(1:nrow(newData_Mid), splitRatio*nrow(newData_Mid))
+Low_train_index <- sample(1:nrow(newData_Low), splitRatio*nrow(newData_Low))
+
+train_High <- newData_High[High_train_index, ]  
+train_Mid <- newData_Mid[Mid_train_index, ]
+train_Low <- newData_Low[Low_train_index, ]
+
+train_Data <- rbind(train_High, train_Low) #train_Data <- rbind(train_High, train_Mid, train_Low)
+
+#==== Create Test Data
+test_High <- newData_High[-High_train_index, ]
+test_Mid <- newData_Mid[-Mid_train_index, ]
+test_Low <- newData_Low[-Low_train_index, ]
+
+test_Data <- rbind(test_High, test_Low) #test_Data <- rbind(test_High, test_Mid, test_Low)
+```
+
+$~$
+
+#### Information Value(IV) calculation 
+```{r message=FALSE, warning=FALSE}
+library(smbinning)
+# segregate continuous and factor variables
+factor_vars <- colnames(newData)[21:40]
+continuous_vars <- setdiff(colnames(newData)[-c(21:40)], c("HIVexp", "ExpLevel"))
+iv_df <- data.frame(VARS=c(factor_vars, continuous_vars), IV=numeric(n_fea))  # init for IV results
+
+# compute IV for categorical vars
+for(factor_var in factor_vars){
+  smb <- smbinning.factor(train_Data, y="ExpLevel", x=factor_var)  # WOE table
+  if(class(smb) != "character"){ # check if some error occured
+    iv_df[iv_df$VARS == factor_var, "IV"] <- smb$iv
+  }
+}
+  
+# compute IV for continuous vars
+for(continuous_var in continuous_vars){
+  smb <- smbinning(train_Data, y="ExpLevel", x=continuous_var)  # WOE table
+  if(class(smb) != "character"){  # any error while calculating scores.
+    iv_df[iv_df$VARS == continuous_var, "IV"] <- smb$iv
+  }
+}
+  
+iv_df <- iv_df[order(-iv_df$IV), ]  # sort
+iv_df <- within(iv_df, VARS <- factor(VARS, levels=iv_df$VARS))
+
+ggplot(data=iv_df, aes(x=VARS,y=IV)) + 
+  geom_bar(position="dodge",stat="identity") + 
+  coord_flip() + theme(axis.text.y=element_blank()) +
+  ggtitle("Information Values") 
+
+kable(iv_df) %>% kable_styling("striped", full=FALSE) %>%  scroll_box(height = "400px")
+```
+
+$~$
+
+#### Filter out variables with low IVs 
+```{r message=FALSE, warning=FALSE}
+var_notImp <- iv_df$VARS[iv_df$IV<=0.2] # variables not important by Optimal Binning
+
+train_Data2 <- train_Data[,!names(train_Data) %in% var_notImp]
+test_Data2 <- test_Data[,!names(train_Data) %in% var_notImp]
+```
+
+$~$
+
+#### Build a Logit Model
+```{r message=FALSE, warning=FALSE}
+pModel <- glm(ExpLevel ~ . -HIVexp, data=train_Data2, family=binomial(link="logit"))
+#summary(pModel)
+kable(data.frame(pModel$coefficients)) %>% kable_styling("striped", full_width = F) %>%  scroll_box(height = "400px")
+```
+
+$~$
+
+#### HIV expression level prediction for the test data 
+```{r message=FALSE, warning=FALSE}
+predicted <- plogis(predict(pModel, test_Data2))  #or# predicted <- predict(pModel, testData, type="response")
+
+# Decide on optimal prediction probability cutoff for the model
+library(InformationValue)
+optCutOff <- optimalCutoff(test_Data2$ExpLevel, predicted)[1] 
+optCutOff
+
+# Misclassification Error
+misClassError(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+
+# ROC
+plotROC(test_Data2$ExpLevel, predicted)
+
+# Concordance
+kable(data.frame(Concordance(test_Data2$ExpLevel, predicted))) %>% kable_styling("striped", full_width = F)
+
+# Sensitivity and specificity
+Sensitivity <- InformationValue::sensitivity(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+Specificity <- InformationValue::specificity(test_Data2$ExpLevel, predicted, threshold = optCutOff)
+kable(data.frame(cbind(Sensitivity, Specificity))) %>% kable_styling("striped", full_width = F)
+
+# Confusion Matrix
+df_CM <- data.frame(InformationValue::confusionMatrix(test_Data2$ExpLevel, predicted, threshold = optCutOff))
+colnames(df_CM) <- c("Low", "High")
+kable(df_CM) %>% kable_styling("striped", full_width = F)
+```
+
+$~$
+
+#### Compare predicted HIV expression values between Low and High groups
+```{r message=FALSE, warning=FALSE}
+library(ggpubr)
+df <- data.frame(cbind(test_Data2$ExpLevel, test_Data2$HIVexp, predicted))
+colnames(df) <- c("ExpLevel", "ExpValue", "Predicted")
+df$ExpLevel <- ifelse(df$ExpLevel==0, "Low", "High")
+df$ExpLevel <- as.factor(df$ExpLevel)
+
+ggplot(df, aes(x=ExpLevel, y=Predicted, fill=ExpLevel)) + 
+  geom_boxplot() + geom_jitter(shape=16, position=position_jitter(0.2)) +
+  stat_compare_means(label.x = 1.3, label.y = 1.1)
+```
+
+
+$~$
+
+#### (Optional) Check predicted HIV expression values for Mid-group test data
+```{r message=FALSE, warning=FALSE}
+predicted_Mid <- plogis(predict(pModel, test_Mid))  #or# predicted <- predict(pModel, testData, type="response")
+df2 <- data.frame(rbind(cbind(test_Data2$ExpLevel, test_Data2$HIVexp, predicted), cbind(test_Mid$ExpLevel, test_Mid$HIVexp, predicted_Mid)))
+colnames(df2) <- c("ExpLevel", "ExpValue", "Predicted")
+df2 <- df2 %>% mutate(ExpLevel = case_when(ExpLevel == 1 ~ "High", ExpLevel == 0 ~ "Low", TRUE ~ "Mid"))
+df2$ExpLevel <- factor(df2$ExpLevel, ordered = TRUE, levels = c("High", "Mid", "Low"))
+ggplot(df2, aes(x=ExpLevel, y=Predicted, fill=ExpLevel)) +
+  geom_boxplot() + geom_jitter(shape=16, position=position_jitter(0.2)) +
+  stat_compare_means(label.x = 1.3, label.y = 1.1) + scale_fill_manual(values=c("#F8766D", "#00BA38", "#619CFF"))
+```
+
+$~$
+
+### ==End of Report== ###
