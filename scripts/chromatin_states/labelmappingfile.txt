@@ -1,0 +1,15 @@
+U1	Active TSS
+U2	Flanking active TSS
+U3	Transcription TSS/TTS
+U4	Strong transcription
+U5	Weak transcription
+U6	Genic enhancer
+U7	Active enhancer
+U8	ZNF genes & repeats
+U9	Heterochromatin
+U10	Bivalent/poised TSS
+U11	Flanking bivalent TSS/enhancer
+U12	Bivalent enhancer
+U13	Repressed Polycomb
+U14	Weak repressed Polycomb
+U15	Quiescent/low
