@@ -127,6 +127,8 @@ liftOver /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/Lusic2019/ge
 ########## 11) HIV Bhive; use
 # /project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/hiv_expression.bed
 
+########## 12) Garcia-Broncano et al., 2019 - got directly from suppmental materials table S1
+##### Already in GRCh38
 
 ######################################################################
 ######################################################################

@@ -3,6 +3,7 @@
 ### This makes the pictures for the publication
 
 ########## Download E045, E039, E040, and E041
+##### For final figures, only use E40
 # Website: https://egg2.wustl.edu/roadmap/data/byFileType/chromhmmSegmentations/ChmmModels/coreMarks/jointModel/final
 # Downloaded to: /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles
 # Dowload: E0*_15_coreMarks_hg38lift_segments.bed.gz
@@ -19,7 +20,7 @@ zcat /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/kno
 ########################################################################
 ########################################################################
 ########################################################################
-##### Figure A: Combined analysis; order: BHIVE, Han, Ikeda, Maldarelli, Wagner, Einkauf, Kok, Sharaf, Coffin, McManus, Mack, Sherril-Mix, Sunshine, Ferris, Lucic
+##### Figure A: Combined analysis; order: BHIVE, Han, Ikeda, Maldarelli, Wagner, Einkauf, Kok, Sharaf, Coffin, McManus, Mack, Garcia-Broncano, Sherril-Mix, Sunshine, Ferris, Lucic
 # Put in folder /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient
 cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/BHIVE.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/A_BHIVE.bed
 cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Han2004.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/B_Han2004.bed
@@ -32,37 +33,38 @@ cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Shar
 cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Coffin2019.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/I_Coffin2019.bed
 cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/McManus2019.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/J_McManus2019.bed
 cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Mack2003.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/K_Mack2003.bed
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Sherrill-Mix2013.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/L_Sherrill-Mix2013.bed
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Sunshine2016.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/M_Sunshine2016.bed
-cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Ferris2019.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/N_Ferris2019.bed
-cat /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/Lusic2019/genome_structure_and_HIV_integration/GSE134382_NIH/Lusic2019_*_hg38_liftover.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/O_Lusic_2019.bed
+cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Garcia-Broncano2019.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/L_Garcia-Broncano2019.bed
+cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Sherrill-Mix2013.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/M_Sherrill-Mix2013.bed
+cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Sunshine2016.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/N_Sunshine2016.bed
+cp /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Ferris2019.bed /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/O_Ferris2019.bed
+cat /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/Lusic2019/genome_structure_and_HIV_integration/GSE134382_NIH/Lusic2019_*_hg38_liftover.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient/P_Lusic_2019.bed
 
 ### Do overlap plot for chromHMM
-# Jurkat
-unset DISPLAY
-java -Djava.awt.headless=true -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/labelmappingfile.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/jurkat_15_segments_reorder.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/Jurkat_CombinedPatient
+## Jurkat
+#unset DISPLAY
+#java -Djava.awt.headless=true -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
+#  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/labelmappingfile.txt \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/jurkat_15_segments_reorder.bed \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/Jurkat_CombinedPatient
 
-#E045
-unset DISPLAY
-java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -b 1 \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E045_15_coreMarks_hg38lift_segments.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/E045_CombinedPatient
+##E045
+#unset DISPLAY
+#java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
+#  -b 1 \
+#  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E045_15_coreMarks_hg38lift_segments.bed \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/E045_CombinedPatient
 
-#E039
-unset DISPLAY
-java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -b 1 \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E039_15_coreMarks_hg38lift_segments.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/E039_CombinedPatient
+##E039
+#unset DISPLAY
+#java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
+#  -b 1 \
+#  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E039_15_coreMarks_hg38lift_segments.bed \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/E039_CombinedPatient
 
 #E040
 unset DISPLAY
@@ -73,14 +75,14 @@ java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHM
   /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
   /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/E040_CombinedPatient
 
-#E041
-unset DISPLAY
-java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -b 1 \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E041_15_coreMarks_hg38lift_segments.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/E041_CombinedPatient
+##E041
+#unset DISPLAY
+#java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
+#  -b 1 \
+#  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E041_15_coreMarks_hg38lift_segments.bed \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_CombinedPatient \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/E041_CombinedPatient
 
 
 ########################################################################
@@ -164,32 +166,35 @@ grep -v "Intact" /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/over
 grep "Intact" /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Einkauf_patient3.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective/C_Einkauf_patient3_Intact.bed
 grep -v "Intact" /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Einkauf_patient3.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective/F_Einkauf_patient3_Defective.bed
 
+grep "Intact" /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Garcia-Broncano2019.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective/G_Garcia-Broncano_Intact.bed
+grep -v "Intact" /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_input/Garcia-Broncano2019.bed >/project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective/H_Garcia-Broncano_Defective.bed
+
 ### Do overlap plot for chromHMM
-# Jurkat
-unset DISPLAY
-java -Djava.awt.headless=true -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/labelmappingfile.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/jurkat_15_segments_reorder.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/Jurkat_IntactDefective
+## Jurkat
+#unset DISPLAY
+#java -Djava.awt.headless=true -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
+#  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/labelmappingfile.txt \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/jurkat_15_segments_reorder.bed \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/Jurkat_IntactDefective
 
-#E045
-unset DISPLAY
-java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -b 1 \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E045_15_coreMarks_hg38lift_segments.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective\
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/E045_IntactDefective
+##E045
+#unset DISPLAY
+#java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
+#  -b 1 \
+#  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E045_15_coreMarks_hg38lift_segments.bed \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective\
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/E045_IntactDefective
 
-#E039
-unset DISPLAY
-java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -b 1 \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E039_15_coreMarks_hg38lift_segments.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/E039_IntactDefective
+##E039
+#unset DISPLAY
+#java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
+#  -b 1 \
+#  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E039_15_coreMarks_hg38lift_segments.bed \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/E039_IntactDefective
 
 #E040
 unset DISPLAY
@@ -200,11 +205,11 @@ java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHM
   /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective \
   /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/E040_IntactDefective
 
-#E041
-unset DISPLAY
-java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
-  -b 1 \
-  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E041_15_coreMarks_hg38lift_segments.bed \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective \
-  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/E041_IntactDefective
+##E041
+#unset DISPLAY
+#java -Djava.awt.headless=true -Xmx1000g -jar /work/BICF/s185797/programs/ChromHMM/ChromHMM.jar OverlapEnrichment \
+#  -b 1 \
+#  -m /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureA_CombinedPatient/labelmappingfile_known.txt \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/known_state_bedfiles/E041_15_coreMarks_hg38lift_segments.bed \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/Patient_data/overlap_IntactDefective \
+#  /project/BICF/BICF_Core/shared/Projects/Dorso/chromatin_states/chromHMM/output_histone7/histone_learn_15/Reorder_sameasErnst/FigureC_IntactDefective/E041_IntactDefective

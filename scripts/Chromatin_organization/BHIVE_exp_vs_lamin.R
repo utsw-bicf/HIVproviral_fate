@@ -4,7 +4,7 @@
 setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_lamin')
 
 ### Load file
-expLamin <- read.table(file="/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/HIVexp_HisPlus4_chrom_lamin_4ML.tsv", header = T, sep = "\t")
+expLamin <- read.table(file="/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/older_test_files/HIVexp_HisPlus4_chrom_lamin_4ML.tsv", header = T, sep = "\t")
 
 ### Remove unknown chr
 expLamin <- expLamin[!expLamin$chr == "chrUn_GL000195v1", ]
@@ -21,18 +21,34 @@ pdf("BHIVE_exp_by_lamin_subcompartments.pdf")
 ggplot(expLamin, aes(x=lamin_0_200, y=HIVexp)) + 
   geom_violin(trim = FALSE) +
   geom_jitter(position=position_jitter(width=.2, height=0), size=0.5) +
-  ggtitle("HIV Expression by Lamin subcompartments") + 
+  #ggtitle("HIV Expression by Lamin subcompartments") + 
   ylab("HIV Expression in log10") +
   stat_summary(fun.y= mean, fun.ymin=mean, fun.ymax=mean, geom="crossbar", width=0.5, color="red") +
   scale_x_discrete(labels = wrap_format(10)) +
   theme(plot.title = element_text(size=22, hjust = 0.5), 
-        axis.text.x = element_text(angle = 90, hjust = 1),
+        #axis.text.x = element_text(angle = 90, hjust = 1),
         axis.title.x=element_blank(),
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
         axis.line = element_line(colour = "black"),
         legend.position="none")
+dev.off()
+
+########## pie chart of inserts
+expLamin <- expLamin[!expLamin$chr == "chrUn_GL000195v1", ]
+
+### reduce to 2 important columsn
+rEL <- expLamin[c("HIVexp", "lamin_0_200")]
+rEL$lamin_0_200[is.na(rEL$lamin_0_200)] <- "Unknown"
+
+### make levels in proper order
+rEL$lamin_0_200 <- factor(rEL$lamin_0_200,levels = c("A1", "A2", "B1", "B2", "B3", "B4", "Unknown"))
+
+pdf("piechart_HIVinserts_GSMlamin.pdf")
+mytable <- table (rEL$lamin_0_200)
+lbls <- paste(names(mytable), "\n", mytable, sep="")
+pie(mytable, labels = lbls, main="Insertions in Sub-compartments")
 dev.off()
 
 ######################################################################
@@ -165,7 +181,7 @@ write.table(pr2, file=("Lamin_hypergeometric_test.txt"), quote=F, row.names = F,
 setwd('/project/BICF/BICF_Core/shared/Projects/Dorso/Bhive/bhive_singularity/BHIVE_for_single_provirus_transcriptomics/annotate/expression_lamin')
 
 ### Load file
-expLamin <- read.table(file="/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/HIVexp_His7Plus4_chrom_lamin_4ML.tsv", 
+expLamin <- read.table(file="/project/BICF/BICF_Core/shared/Projects/Dorso/machine_learning/older_test_files/HIVexp_His7Plus4_chrom_lamin_4ML.tsv", 
                        header = T, sep = "\t", stringsAsFactors = FALSE)
 
 expLamin <- expLamin[!expLamin$chr == "chrUn_GL000195v1", ]

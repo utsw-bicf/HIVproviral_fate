@@ -167,6 +167,8 @@ shapiro.test(x = aov_residuals )
 kruskal.test(expr ~ HMM, data = rEL)
 
 test <- pairwise.wilcox.test(rEL$expr, rEL$HMM, p.adjust.method = "BH")
+test2 <- as.table(test$p.value)
+write.table(test2, file="pairwise_wilcox_test.txt", quote=F, col.names = T, row.names = T, sep = "\t")
 test$p.value[is.na(test$p.value)] <- 1
 
 library("gplots")
