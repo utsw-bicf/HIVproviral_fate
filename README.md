@@ -4,7 +4,7 @@ Holly Ruess<sup>1</sup>, Jeon Lee<sup>1</sup>, Carlos Guzman<sup>2,3</sup>, Venk
 
 <sup>1</sup>Bioinformatics Core Facility, The University of Texas Southwestern Medical Center, UT Southwestern, Dallas, TX 75390, USA <br />
 <sup>2</sup>Department of Microbiology, The University of Texas Southwestern Medical Center, UT Southwestern, Dallas, TX 75390, USA<br />
-<sup>3</sup>Present address: Bioinformatics and Systems Biology Graduate Program, University of California San Diego, La Jolla, CA<br /> 92093
+<sup>3</sup>Present address: Bioinformatics and Systems Biology Graduate Program, University of California San Diego, La Jolla, CA 92093<br />
 <sup>4</sup>Lead contact: Ivan.Dorso@utsouthwestern.edu<br />
 
 
